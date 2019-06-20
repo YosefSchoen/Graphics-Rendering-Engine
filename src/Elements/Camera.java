@@ -1,5 +1,6 @@
 package Elements;
 
+import Primitives.Coordinate;
 import Primitives.Point3d;
 import Primitives.Vector;
 import Primitives.Ray;
@@ -10,9 +11,9 @@ public class Camera {
     //empty constructor
     public Camera() {
         this.p0 = new Point3d();
-        this.vUp = new Vector();
-        this.vTo = new Vector();
-        this.vRight = new Vector();
+        this.vUp = new Vector(new Point3d(new Coordinate(1), new Coordinate(1), new Coordinate(1)));
+        this.vTo = new Vector(new Point3d(new Coordinate(1), new Coordinate(1), new Coordinate(1)));
+        this.vRight = new Vector(new Point3d(new Coordinate(1), new Coordinate(1), new Coordinate(1)));
     }
 
     //constructor
@@ -104,7 +105,7 @@ public class Camera {
     //p0 is the origin point of the camera
     private Point3d p0;
 
-    //these are the vectors going up toward, and rightward of the screen from p0
+    //these are the vectors going up, toward, and rightward of the screen from p0
     private Vector vUp;
     private Vector vTo;
     private Vector vRight;

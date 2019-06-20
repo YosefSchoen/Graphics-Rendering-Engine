@@ -1,4 +1,4 @@
-package unittests.GeometriesTests;
+package GeometriesTests;
 
 import Geometries.Plane;
 import Primitives.Coordinate;

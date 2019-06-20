@@ -1,4 +1,4 @@
-package unittests.RendererTests;
+package RendererTests;
 
 import Renderer.ImageWriter;
 

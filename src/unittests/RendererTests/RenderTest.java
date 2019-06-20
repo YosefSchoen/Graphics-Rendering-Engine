@@ -1,4 +1,4 @@
-package unittests.RendererTests;
+package RendererTests;
 
 import Elements.*;
 import Geometries.Geometry;
@@ -15,6 +15,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class RenderTest {
     Color color = new Color(0, 0, 0);
 
@@ -27,34 +28,34 @@ public class RenderTest {
                 PointLight pointLight = new PointLight(); //light parameter
                 SpotLight spotLight = new SpotLight(); //light parameter
             List<LightSource> lights = new ArrayList<>(); //scene parameter
-                        Coordinate cS1x = new Coordinate(); //sphere1 parameter
-                        Coordinate cS1y = new Coordinate(); //sphere1 parameter
-                        Coordinate cS1z = new Coordinate(); //sphere1 parameter
+                        Coordinate cS1x = new Coordinate(5); //sphere1 parameter
+                        Coordinate cS1y = new Coordinate(6); //sphere1 parameter
+                        Coordinate cS1z = new Coordinate(3); //sphere1 parameter
                     Point3d pS1 = new Point3d(cS1x, cS1y, cS1z); //sphere1 parameter
                 Sphere sphere1 = new Sphere(10, pS1); //geometry parameter
-                        Coordinate cS2x = new Coordinate(); //sphere2 parameter
-                        Coordinate cS2y = new Coordinate(); //sphere2 parameter
-                        Coordinate cS2z = new Coordinate(); //sphere2 parameter
+                        Coordinate cS2x = new Coordinate(3); //sphere2 parameter
+                        Coordinate cS2y = new Coordinate(3); //sphere2 parameter
+                        Coordinate cS2z = new Coordinate(6); //sphere2 parameter
                     Point3d pS2 = new Point3d(cS2x, cS2y, cS2z); //sphere2 parameter
                 Sphere sphere2 = new Sphere(7, pS2); //geometry parameter
-                        Coordinate cTrx = new Coordinate(); //triangle parameter
-                        Coordinate cTry = new Coordinate(); //triangle parameter
-                        Coordinate cTrz = new Coordinate(); //triangle parameter
+                        Coordinate cTrx = new Coordinate(2); //triangle parameter
+                        Coordinate cTry = new Coordinate(2); //triangle parameter
+                        Coordinate cTrz = new Coordinate(3); //triangle parameter
                     Point3d pTr = new Point3d(cTrx, cTry, cTrz); //triangle parameter
-                Triangle triangle = new Triangle(); //geometry parameter
+                Triangle triangle = new Triangle(pS1, pS2, new Point3d(new Coordinate(4), new Coordinate(3), new Coordinate(7))); //geometry parameter
             List<Geometry> geometries = new ArrayList<Geometry>(); //scene parameter
                     Coordinate c0x = new Coordinate(); //p0 parameter
                     Coordinate c0y = new Coordinate(); //p0 parameter
                     Coordinate c0z = new Coordinate(); //p0 parameter
                 Point3d p0 = new Point3d(c0x, c0x, c0z); //camera parameter
-                        Coordinate cUpx = new Coordinate(); //vUP parameter
-                        Coordinate cUpy = new Coordinate(); //vUP parameter
-                        Coordinate cUpz = new Coordinate(); //vUP parameter
+                        Coordinate cUpx = new Coordinate(1); //vUP parameter
+                        Coordinate cUpy = new Coordinate(1); //vUP parameter
+                        Coordinate cUpz = new Coordinate(1); //vUP parameter
                     Point3d pUp = new Point3d(cUpx, cUpy, cUpz);
                 Vector vUp = new Vector(pUp); //camera parameter
-                        Coordinate cTox = new Coordinate(); //vTo parameter
-                        Coordinate cToy = new Coordinate(); //vTo parameter
-                        Coordinate cToz = new Coordinate(); //vTo parameter
+                        Coordinate cTox = new Coordinate(1); //vTo parameter
+                        Coordinate cToy = new Coordinate(1); //vTo parameter
+                        Coordinate cToz = new Coordinate(1); //vTo parameter
                     Point3d pTo = new Point3d(cTox, cToy, cToz);
                 Vector vTo = new Vector(pTo); //camera parameter
             Camera camera = new Camera(p0, vUp, vTo); //scene parameter
@@ -68,8 +69,8 @@ public class RenderTest {
         ImageWriter imageWriter = new ImageWriter(imageName, width, height, Nx, Ny); //Renderer parameters
     Renderer renderer = new Renderer(scene, imageWriter);
 
-
-    public RenderTest() {
+    @org.junit.Test
+    public void RenderTest() {
         lights.add(directionalLight);
         lights.add(pointLight);
         lights.add(spotLight);

@@ -1,4 +1,4 @@
-package unittests.ElementsTests;// package unittests;
+package ElementsTests;// package unittests;
 
 import Elements.Camera;
 import Primitives.Coordinate;
