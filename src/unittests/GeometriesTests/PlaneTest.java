@@ -54,6 +54,12 @@ public class PlaneTest {
 
         myIntersections = myPlane.findIntersections(myRay);
 
+        if (myIntersections.size() == 0) {
+            System.out.println("empty");
+        }
+        else {
+            System.out.println("not empty");
+        }
         for (int i = 0; i < myIntersections.size(); i++) {
             //assertEquals("", -1, myIntersections.get(i).getX().getCoordinate(), 1e-10);
             //assertEquals("", 1, myIntersections.get(i).getY().getCoordinate(), 1e-10);

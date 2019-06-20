@@ -69,6 +69,7 @@ public class Plane extends Geometry implements FlatGeometry{
 
     //find intersections of camera ray P and a plane
     public List<Point3d> findIntersections(Ray P) {
+        /*
         List<Point3d> intersection = new ArrayList<Point3d>();
 
        double t = (this.N.dotProduct(this.Q.subtract(P.getP0()))) / this.N.dotProduct(P.getDirection());
@@ -78,6 +79,29 @@ public class Plane extends Geometry implements FlatGeometry{
         intersection.add(p1);
 
         return intersection;
+         */
+        List<Point3d> intersectionPoints = new ArrayList<Point3d>();
+        Point3d P0 = P.getP0();
+        Point3d Q0 = this.getQ();
+        Vector N = this.getNormal(null);
+        Vector V = P.getDirection();
+
+        if(N.dotProduct(V)==0)
+        {
+            // ray.getDirection() is parralel to the plane
+            // no intersections points
+            return intersectionPoints;
+        }
+
+        Vector u = new Vector(new Point3d(P0.getX().subtract(Q0.getX()), P0.getY().subtract(Q0.getY()), P0.getZ().subtract(Q0.getZ())));
+        double t = (N.dotProduct(u) * -1) / N.dotProduct(V);
+
+        if (t >= 0) {
+            V.scalarMultiply(t);
+            Point3d p = P0.add(V);
+            intersectionPoints.add(p);
+        }
+        return intersectionPoints;
     }
 
     //a plane is defined by at least 3 point

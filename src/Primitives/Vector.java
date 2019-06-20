@@ -99,7 +99,6 @@ public class Vector {
         return Math.sqrt(xValue + yValue + zValue);
     }
 
-    // NOTE: I think this is meant to just return a copy of a normalized version of this vector, not change it ~YB
     //method to make the length 1 and keep the direction of the vector the same
     public void normalize() {
         // Avoid divide by zero
@@ -107,10 +106,13 @@ public class Vector {
             Coordinate scalar = new Coordinate(this.length());
             Point3d p = new Point3d(scalar, scalar, scalar);
             this.head = this.head.divide(p);
+            //Vector p1 = new Vector(this.head.divide(p));
+            //return new Vector(p1);
         }
         // If the vector has no length, then just make it in to this
         else {
-            this.head = new Point3d(new Coordinate(0), new Coordinate(0), new Coordinate(1));
+            //return new Vector(new Point3d(new Coordinate(0), new Coordinate(1), new Coordinate(0)));
+            this.head = new Point3d(new Coordinate(0), new Coordinate(1), new Coordinate(0));
         }
     }
 

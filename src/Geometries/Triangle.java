@@ -50,7 +50,7 @@ public class Triangle extends Geometry implements FlatGeometry{
       Vector V2 = this.p3.subtract(this.p1);
       Vector N = V1.crossProduct(V2);
       N.normalize();
-      return N;
+      return new Vector(N);
    }
 
    //setters
@@ -99,7 +99,7 @@ public class Triangle extends Geometry implements FlatGeometry{
       double sign1 = N1.dotProduct(this.p1.subtract(P.getP0()));
       double sign2 = N2.dotProduct(this.p2.subtract(P.getP0()));
       double sign3 = N3.dotProduct(this.p3.subtract(P.getP0()));
-
+      //afSystem.out.println("" + sign1 + " " + sign2 + " " + sign3 + " \t " + N1.length() + " " + N2.length() + " " + N3.length());
 
       if (sign1 < 0 && sign2 < 0 && sign3 < 0) {
          intersection = trianglesPlane.findIntersections(P);

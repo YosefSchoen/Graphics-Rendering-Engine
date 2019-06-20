@@ -1,4 +1,4 @@
-package unittests.GeometriesTests;
+package GeometriesTests;
 
 import Geometries.Plane;
 import Geometries.Triangle;
@@ -15,25 +15,25 @@ import static org.junit.Assert.*;
 
 public class TriangleTest {
     Color color = new Color(0, 0, 0);
-    public Coordinate cX0 = new Coordinate(5);
-    public Coordinate cY0 = new Coordinate(2);
-    public Coordinate cZ0 = new Coordinate(5);
+    public Coordinate cX0 = new Coordinate(1);
+    public Coordinate cY0 = new Coordinate(1);
+    public Coordinate cZ0 = new Coordinate(-5);
 
-    public Coordinate cX1 = new Coordinate(-3);
-    public Coordinate cY1 = new Coordinate(3);
-    public Coordinate cZ1 = new Coordinate(5);
+    public Coordinate cX1 = new Coordinate(-2);
+    public Coordinate cY1 = new Coordinate(2);
+    public Coordinate cZ1 = new Coordinate(-5);
 
-    public Coordinate cX2 = new Coordinate(4);
+    public Coordinate cX2 = new Coordinate(0);
     public Coordinate cY2 = new Coordinate(-4);
-    public Coordinate cZ2 = new Coordinate(4);
+    public Coordinate cZ2 = new Coordinate(-5);
 
     public Coordinate cX3 = new Coordinate(0);
     public Coordinate cY3 = new Coordinate(0);
     public Coordinate cZ3 = new Coordinate(0);
 
-    public Coordinate cX4 = new Coordinate(0.9);
-    public Coordinate cY4 = new Coordinate(1.9);
-    public Coordinate cZ4 = new Coordinate(4.9);
+    public Coordinate cX4 = new Coordinate(0);
+    public Coordinate cY4 = new Coordinate(0);
+    public Coordinate cZ4 = new Coordinate(-1);
 
     public Point3d p0 = new Point3d(cX0, cY0, cZ0);
     public Point3d p1 = new Point3d(cX1, cY1, cZ1);
@@ -50,11 +50,17 @@ public class TriangleTest {
         List<Point3d> myIntersections = new ArrayList<Point3d>();
         myIntersections = myTriangle.findIntersections(myRay);
 
+        if(myIntersections.size() == 0){
+            System.out.println("empty");
+        }
+        else {
+            System.out.println("Not empty");
+        }
 
         for (int i = 0; i < myIntersections.size(); i++) {
-            assertEquals("", -1, myIntersections.get(i).getX().getCoordinate(), 1e-10);
-            assertEquals("", 1, myIntersections.get(i).getY().getCoordinate(), 1e-10);
-            assertEquals("", 1, myIntersections.get(i).getZ().getCoordinate(), 1e-10);
+            assertEquals("", 0, myIntersections.get(i).getX().getCoordinate(), 1e-10);
+            assertEquals("", 0, myIntersections.get(i).getY().getCoordinate(), 1e-10);
+            assertEquals("", -5, myIntersections.get(i).getZ().getCoordinate(), 1e-10);
         }
 
     }
