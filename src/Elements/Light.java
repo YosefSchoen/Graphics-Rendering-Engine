@@ -42,13 +42,30 @@ public abstract class Light {
      * @param val any double value
      * @return a value in the range [0, 1]
      */
-    protected double clamp(double val){
+    public static double clamp(double val){
         if (val < 0.0) {
             return 0.0;
         }
 
         if (val > 1.0) {
             return 1.0;
+        }
+
+        return val;
+    }
+
+    /**
+     * return val clamped to the range [0, 255]
+     * @param val any int value
+     * @return a value in the range [0, 255]
+     */
+    public static int clamp(int val){
+        if (val < 0) {
+            return 0;
+        }
+
+        if (val > 255) {
+            return 255;
         }
 
         return val;

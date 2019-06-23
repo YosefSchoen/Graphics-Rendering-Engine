@@ -46,17 +46,14 @@ public class AmbientLight extends Light {
         int newGreen;
         int newBlue;
 
-        if (color.getRed() * Ka > 255) { newRed  = 255; }
-        else { newRed = (int)(color.getRed() * Ka); }
+        newRed = (int)(color.getRed() * Ka);
 
-        if (color.getGreen() * Ka > 255) { newGreen = 255; }
-        else {newGreen = (int)(color.getGreen() * Ka); }
+        newGreen = (int)(color.getGreen() * Ka);
 
-        if (color.getBlue() * Ka > 255) { newBlue = 255; }
-        else {newBlue = (int)(color.getBlue() * Ka); }
+        newBlue = (int)(color.getBlue() * Ka);
 
 
-        Color newColor = new Color(newRed, newGreen, newBlue);
+        Color newColor = new Color(clamp(newRed), clamp(newGreen), clamp(newBlue));
         return newColor;
     }
 

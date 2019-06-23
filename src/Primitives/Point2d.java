@@ -47,10 +47,7 @@ public class Point2d {
     //compares two Points2ds to see if they are equal
     public int compareTo(Point2d other) {
         //calls the compareTo method of the points x and y coordinates
-        if (this.x.compareTo(other.x) == 0) {
-            return 0;
-        }
-        if(this.y.compareTo(other.y) == 0) {
+        if (this.x.compareTo(other.x) == 0 && this.y.compareTo(other.y) == 0) {
             return 0;
         }
 

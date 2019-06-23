@@ -1,4 +1,4 @@
-package unittests.ElementsTests;
+package ElementsTests;
 
 public class PointLightTest {
 }

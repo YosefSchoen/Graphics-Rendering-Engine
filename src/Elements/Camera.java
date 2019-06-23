@@ -95,7 +95,7 @@ public class Camera {
 
         //setting up
         Vector v = new Vector(p.subtract(this.p0));
-        v.normalize();
+        v = v.normalize();
 
         Ray rayThroughPixel = new Ray(this.p0, v);
         return rayThroughPixel;

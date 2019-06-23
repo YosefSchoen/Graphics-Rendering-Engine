@@ -1,5 +1,6 @@
 package Renderer;
 
+import Elements.Light;
 import Elements.LightSource;
 import Geometries.FlatGeometry;
 import Primitives.Point3d;
@@ -50,8 +51,8 @@ public class Renderer {
 
     public void renderImage() {
         //need to render through every pixel in the scene
-        for (int i = 0; i < imageWriter.getWidth(); i++) {
-            for (int j = 0; j < imageWriter.getHeight(); j++) {
+        for (int i = 0; i < imageWriter.getNx(); i++) {
+            for (int j = 0; j < imageWriter.getNy(); j++) {
                 //Point3d point = new Point3d();
 
                 // ray will be made starting from the camera to each pixel on the scene
@@ -87,18 +88,20 @@ public class Renderer {
         Color diffuseLight = new Color(0, 0, 0);
         Color specularLight = new Color(0, 0, 0);
 
-        Iterator<LightSource> lights = scene.getLightsIterator();
+        Iterator<LightSource> lights = scene.getLightsIterator();//_image = new BufferedImage(_imageWidth, _imageHeight, BufferedImage.TYPE_INT_RGB);Im
         while (lights.hasNext()) {
-            if(!occluded(lights.next(), point, geometry)) {
+            LightSource curLight = lights.next();
+            if(!occluded(curLight, point, geometry)) {
                 //fix this
                 Vector cameraRay = new Vector(scene.getCamera().getP0());
                 double Kd = geometry.getMaterial().getKd();
                 double Ks = geometry.getMaterial().getKs();
                 Vector N = geometry.getNormal(point);
-                Vector L = lights.next().getL(point);
+                Vector L = curLight.getL(point);
                 int shininess = geometry.getMaterial().getNShininess();
-                Color intensity = lights.next().getIntensity(point);
+                Color intensity = curLight.getIntensity(point);
 
+                //System.out.println("In light" + curLight);
                 Color diffuseColor = calcDiffusiveComp(Kd, N, L, intensity);
                 diffuseLight = addColors(diffuseLight, diffuseColor);
 
@@ -147,8 +150,9 @@ public class Renderer {
         int blueValue = (int)(Kd * normal.dotProduct(L) * lightIntensity.getBlue());
 
 
-        Color diffuseLight = new Color(redValue, greenValue, blueValue);
-        return new Color(1, 1, 1);
+        Color diffuseLight = new Color(Light.clamp(redValue), Light.clamp(greenValue), Light.clamp(blueValue));
+        //return new Color(1, 1, 1);
+        return diffuseLight;
     }
 
     private Color calcSpecularComp(double Ks, Vector cameraRay, Vector normal, Vector L, int nShininess, Color lightIntensity) {
@@ -160,7 +164,7 @@ public class Renderer {
         int greenValue = (int)(Ks * Math.pow(cameraRay.dotProduct(R), nShininess) * lightIntensity.getGreen());
         int blueValue = (int)(Ks * Math.pow(cameraRay.dotProduct(R), nShininess) * lightIntensity.getBlue());
 
-        Color specularLight = new Color(redValue, greenValue, blueValue);
+        Color specularLight = new Color(Light.clamp(redValue), Light.clamp(greenValue), Light.clamp(blueValue));
         return  specularLight;
     }
 
@@ -169,23 +173,13 @@ public class Renderer {
         int greenValue = color1.getGreen() + color2.getGreen();
         int blueValue = color1.getBlue() + color2.getBlue();
 
-        Color newColor = new Color(colorClamp(redValue), colorClamp(greenValue), colorClamp(blueValue));
+        Color newColor = new Color(Light.clamp(redValue), Light.clamp(greenValue), Light.clamp(blueValue));
 
         return newColor;
     }
 
-    private int colorClamp(int color){
-        if (color < 0) {
-            return 0;
-        }
-        if (color > 255) {
-            return 255;
-        }
-        return color;
-    }
-
     private Color addColors(List<Color> colors) {
-        int i = 0;
+        //int i = 0;
         Color newColor = new Color(0, 0, 0);
         //while (!colors.isEmpty()) {
         //    newColor = addColors(newColor, colors.get(i));
@@ -202,7 +196,7 @@ public class Renderer {
         int greenValue = (int)K * color.getGreen();
         int blueValue = (int)K * color.getBlue();
 
-        Color newColor = new Color (redValue, greenValue, blueValue);
+        Color newColor = new Color (Light.clamp(redValue), Light.clamp(greenValue), Light.clamp(blueValue));
 
         return newColor;
     }
@@ -229,7 +223,6 @@ public class Renderer {
             if (entry.getKey().getMaterial().getKt() == 0) {
                 return true;
             }
-
             return false;
         }
 

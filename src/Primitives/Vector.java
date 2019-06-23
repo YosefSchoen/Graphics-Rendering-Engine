@@ -100,19 +100,18 @@ public class Vector {
     }
 
     //method to make the length 1 and keep the direction of the vector the same
-    public void normalize() {
+    public Vector normalize() {
         // Avoid divide by zero
         if(this.length() != 0) {
             Coordinate scalar = new Coordinate(this.length());
             Point3d p = new Point3d(scalar, scalar, scalar);
-            this.head = this.head.divide(p);
-            //Vector p1 = new Vector(this.head.divide(p));
-            //return new Vector(p1);
+            //this.head = this.head.divide(p);
+            Vector p1 = new Vector(this.head.divide(p));
+            return new Vector(p1);
         }
         // If the vector has no length, then just make it in to this
         else {
-            //return new Vector(new Point3d(new Coordinate(0), new Coordinate(1), new Coordinate(0)));
-            this.head = new Point3d(new Coordinate(0), new Coordinate(1), new Coordinate(0));
+            throw new IllegalArgumentException("Cannot normalize the zero vector. (Divide by zero Error)");
         }
     }
 

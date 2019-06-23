@@ -20,21 +20,28 @@ public class Plane extends Geometry implements FlatGeometry{
     }
 
     //constructor
-    public Plane(Point3d Q, Vector N) {
+    public Plane(Point3d Q, Vector N, Material mat, Color emi) {
         this.Q = Q;
         this.Q1 = null;
         this.Q2 = null;
 
+        this.setMaterial(mat);
+        this.setEmission(emi);
+
         this.N = N;
     }
 
-    public Plane(Point3d Q, Point3d Q1, Point3d Q2) {
+    public Plane(Point3d Q, Point3d Q1, Point3d Q2, Material mat, Color emi) {
         this.Q = Q;
         this.Q1 = Q1;
         this.Q2 = Q2;
 
         Vector t1 = this.Q1.subtract(this.Q);
         Vector t2 = this.Q2.subtract(this.Q);
+
+
+        this.setMaterial(mat);
+        this.setEmission(emi);
 
         this.N = t1.crossProduct(t2);
     }
@@ -45,6 +52,9 @@ public class Plane extends Geometry implements FlatGeometry{
         this.Q = other.Q;
         this.Q1 = other.Q1;
         this.Q2 = other.Q2;
+
+        this.setMaterial(other.getMaterial());
+        this.setEmission(other.getEmission());
 
         this.N = other.N;
     }
@@ -79,7 +89,7 @@ public class Plane extends Geometry implements FlatGeometry{
         intersection.add(p1);
 
         return intersection;
-         */
+        */
         List<Point3d> intersectionPoints = new ArrayList<Point3d>();
         Point3d P0 = P.getP0();
         Point3d Q0 = this.getQ();
@@ -93,16 +103,18 @@ public class Plane extends Geometry implements FlatGeometry{
             return intersectionPoints;
         }
 
-        Vector u = new Vector(new Point3d(P0.getX().subtract(Q0.getX()), P0.getY().subtract(Q0.getY()), P0.getZ().subtract(Q0.getZ())));
-        double t = (N.dotProduct(u) * -1) / N.dotProduct(V);
+        //Vector u = new Vector(new Point3d(Q0.getX().subtract(P0.getX()), Q0.getY().subtract(P0.getY()), Q0.getZ().subtract(P0.getZ())));
+        Vector u = new Vector(Q.subtract(P0));
+        double t = (u.dotProduct(N)) / N.dotProduct(V);
 
         if (t >= 0) {
-            V.scalarMultiply(t);
-            Point3d p = P0.add(V);
+            Vector Vs = V.scalarMultiply(t);
+            Point3d p = P0.add(Vs);
             intersectionPoints.add(p);
         }
         return intersectionPoints;
     }
+
 
     //a plane is defined by at least 3 point
     private Point3d Q;

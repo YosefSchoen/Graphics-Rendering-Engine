@@ -4,7 +4,7 @@ package Primitives;
 public class Coordinate {
     //empty constructor
     public Coordinate() {
-        this.coordinate = 0;
+        this.coordinate = 0.0;
     }
 
     //constructor
@@ -63,6 +63,11 @@ public class Coordinate {
         }
         Coordinate newCoordinate = new Coordinate(this.coordinate / other.coordinate);
         return newCoordinate;
+    }
+
+    @Override
+    public String toString() {
+        return "" + coordinate;
     }
 
     //value of the coordinate

@@ -25,7 +25,8 @@ public class ImageWriter {
         _Ny = Ny;
 
         // Hold the actual image (before it is written to disk)
-        _image = new BufferedImage(_imageWidth, _imageHeight, BufferedImage.TYPE_INT_RGB);
+        //_image = new BufferedImage(_imageWidth, _imageHeight, BufferedImage.TYPE_INT_RGB);
+        _image = new BufferedImage(_Nx, _Ny, BufferedImage.TYPE_INT_RGB);
     }
 
     public ImageWriter (ImageWriter imageWriter) {

@@ -70,7 +70,7 @@ public class Shlav8Tester {
 		Point3d pointT12 = new Point3d(-3500, -3500, -1000);
 		Point3d pointT13 = new Point3d(3500, -3500, -2000);
 
-		Triangle triangle = new Triangle(pointT11, pointT12,  pointT13);
+		Triangle triangle = new Triangle(pointT11, pointT12,  pointT13, new Material(), new Color(0, 0, 0));
 
 		Color emissionsT1 = new Color(0,0,0);
 		triangle.setEmission(emissionsT1);
@@ -79,7 +79,7 @@ public class Shlav8Tester {
 		Point3d pointT22 = new Point3d(-3500, 3500, -1000);
 		Point3d pointT23 = new Point3d( -3500, -3500, -1000);
 
-		Triangle triangle2 = new Triangle(pointT21, pointT22, pointT23);
+		Triangle triangle2 = new Triangle(pointT21, pointT22, pointT23, new Material(), new Color(0, 0, 0));
 
 		Color emissionsT2 = new Color(0,0,0);
 		triangle2.setEmission(emissionsT2);
@@ -156,7 +156,7 @@ public class Shlav8Tester {
 		Point3d pointT2 = new Point3d(-225, -125, -260);
 		Point3d pointT3 = new Point3d(-225, -225, -270);
 
-		Triangle triangle = new Triangle(pointT1, pointT2, pointT3);
+		Triangle triangle = new Triangle(pointT1, pointT2, pointT3, new Material(), new Color(0, 0, 0));
 
 		Color color1 = new Color (0, 0, 100);
 		triangle.setEmission(color1);
@@ -185,11 +185,11 @@ public class Shlav8Tester {
 		scene.setScreenDistance(100);
 
 
-		Triangle triangle = new Triangle(new Point3d(3500, 3500, -2000), new Point3d( -3500, -3500, -1000), new Point3d(  3500, -3500, -2000));
+		Triangle triangle = new Triangle(new Point3d(3500, 3500, -2000), new Point3d( -3500, -3500, -1000), new Point3d(  3500, -3500, -2000), new Material(), new Color(0, 0, 0));
 		Color emissions1 = new Color(0,0,0);
 		triangle.setEmission(emissions1);
 
-		Triangle triangle2 = new Triangle(new Point3d(3500, 3500, -2000), new Point3d( -3500,  3500, -1000), new Point3d( -3500, -3500, -1000));
+		Triangle triangle2 = new Triangle(new Point3d(3500, 3500, -2000), new Point3d( -3500,  3500, -1000), new Point3d( -3500, -3500, -1000), new Material(), new Color(0, 0, 0));
 		Color emissions2 = new Color(0,0,0);
 		triangle2.setEmission(emissions2);
 

@@ -56,12 +56,7 @@ public class Point3d extends Point2d{
     //method to compare two Point 3ds
     public int compareTo(Point3d other) {
         //calls the compareTo method of the Point 2d parent (x and y coordinates)
-        if (super.compareTo(other) == 0) {
-            return 0;
-        }
-
-        //calls the z coordinates compareTo method
-        if (this.z.compareTo(other.z) == 0) {
+        if (super.compareTo(other) == 0 && this.z.compareTo(other.z) == 0) {
             return 0;
         }
 

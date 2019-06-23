@@ -57,7 +57,7 @@ public class Sphere extends RadialGeometry {
         Vector L = this.center.subtract(P.getP0());
 
         //tM is scalar length of the rays vector dotted with L
-        P.getDirection().normalize();
+        P.setDirection(P.getDirection().normalize());
         double tM = L.dotProduct(P.getDirection());
 
         //d is the distance of a perpendicular from the sphere center to the ray

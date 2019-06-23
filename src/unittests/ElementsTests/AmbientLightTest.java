@@ -1,4 +1,4 @@
-package unittests.ElementsTests;
+package ElementsTests;
 
 import Elements.AmbientLight;
 import Primitives.Point3d;

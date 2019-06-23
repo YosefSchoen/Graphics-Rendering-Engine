@@ -9,7 +9,7 @@ import java.awt.*;
 public class DirectionalLight extends Light implements LightSource {
     public DirectionalLight() {
         super();
-        this.direction = new Vector();
+        this.direction = new Vector(0, 1, 0);
     }
 
     public DirectionalLight(Color color, Vector direction) {
