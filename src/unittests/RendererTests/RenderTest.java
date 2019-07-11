@@ -22,7 +22,7 @@ public class RenderTest {
     Color color = new Color(0, 0, 0);
 
             String sceneName = "scene test"; //scene parameter
-            Color background = new Color(0, 0, 0); //scene parameter
+            Color background = new Color(20, 20, 20); //scene parameter
 
                 //Color amColor = new Color(150, 50, 250); //ambientLight parameter
                 Color amColor = new Color(10, 10, 10); //ambientLight parameter
@@ -62,8 +62,9 @@ public class RenderTest {
         //lights.add(spotLight);
 
         sphere1.setMaterial(new Material(0.5, 0.5, 0.5, 0, 2));
-        sphere1.setEmission(new Color(0, 0, 255));
+        sphere1.setEmission(new Color(0, 0, 60));
 
+        sphere2.setMaterial(new Material(0.5, 0.5, 0.5, 0, 2));
         sphere2.setEmission(new Color(100, 0, 0));
 
         //triangle.setEmission(new Color(255, 0, 0));
@@ -75,7 +76,7 @@ public class RenderTest {
 
         geometries.add(sphere1);
         geometries.add(sphere2);
-        geometries.add(triangle);
+        //geometries.add(triangle);
         //geometries.add(new Plane(triangle.getP1(), triangle.getNormal(null)));
         //geometries.add(plane2);
 

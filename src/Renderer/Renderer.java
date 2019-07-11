@@ -61,14 +61,14 @@ public class Renderer {
                 //making a map from each geometry to its list of intersection points
                 Map<Geometry, List<Point3d>> intersectionPoints = getSceneRayIntersections(ray);
                 if (intersectionPoints.isEmpty()) {
-                    imageWriter.writePixel(j, i, this.scene.getBackground());
+                    imageWriter.writePixel(i, j, this.scene.getBackground());
                 }
                 else {
                     Map<Geometry, Point3d> closestPoint = getClosestPoint(intersectionPoints);
                     Geometry geometry = (Geometry)closestPoint.keySet().toArray()[0];
                     Point3d point3d = (Point3d)closestPoint.values().toArray()[0];
 
-                    this.imageWriter.writePixel(j, i, calcColor(geometry, point3d, ray, 0));
+                    this.imageWriter.writePixel(i, j, calcColor(geometry, point3d, ray, 0));
                 }
             }
         }
@@ -96,7 +96,8 @@ public class Renderer {
             //rayToLight.setP0(rayToLight.getP0().add(rayToLight.getDirection().scalarMultiply(.0000001)));
             //Map<Geometry, List<Point3d>> blockinglight = getSceneRayIntersections(rayToLight);
             //if(Math.signum(curLight.getL(point).dotProduct(geometry.getNormal(point))) != Math.signum(new Vector(scene.getCamera().getP0().subtract(point)).dotProduct(geometry.getNormal(point)))) {
-                if (!notoccluded(curLight, point, geometry)) {
+                if (notoccluded(curLight, point, geometry)) {
+                    System.out.println(geometry);
                     //fix this
                     Vector cameraRay = new Vector(scene.getCamera().getP0());
                     double Kd = geometry.getMaterial().getKd();
@@ -138,7 +139,7 @@ public class Renderer {
 
         List<Color>colors = new ArrayList<Color>();
         //colors.add(ambientLight);
-        //colors.add(emissionLight);
+        colors.add(emissionLight);
         colors.add(diffuseLight);
         //colors.add(specularLight);
         //colors.add(reﬂectedLight);
