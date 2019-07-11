@@ -11,17 +11,17 @@ public class PointLight extends Light implements LightSource {
     public PointLight() {
         super();
         this.position = new Point3d();
-        this.Kc = 1;
-        this.Kl = 1;
-        this.Kq = 1;
+        this.Kc = 0.5;
+        this.Kl = 0.5;
+        this.Kq = 0.5;
     }
 
     public PointLight(Color color, Point3d position, double Kc, double Kl, double Kq) {
         super(color);
         this.position = position;
-        this.Kc = Kc;
-        this.Kl = Kl;
-        this.Kq = Kq;
+        this.Kc = clamp(Kc);
+        this.Kl = clamp(Kl);
+        this.Kq = clamp(Kq);
     }
 
     public PointLight(PointLight other) {
@@ -34,7 +34,14 @@ public class PointLight extends Light implements LightSource {
 
 
     public Color getIntesity(Point3d point) {
-        return new Color(1,1,1);
+        double distance = position.distance(point);
+        double factor = (Kc + Kl*distance + Kq *distance*distance);
+
+        int red = this.color.getRed();
+        int green = this.color.getGreen();
+        int blue = this.color.getBlue();
+
+        return new Color(clamp((int)(red * factor)), clamp((int)(green * factor)), clamp((int)(blue * factor)));
     }
 
 
@@ -55,17 +62,17 @@ public class PointLight extends Light implements LightSource {
     }
 
     public Vector getL(Point3d point) {
-        return new Vector(point);
+        return new Vector(position.subtract(point));
     }
 
     //needs to be made
     public Color getIntensity(Point3d P) {
-        double scalar = Kc + (Kl*P.distance(position)) + (Kq*Math.pow(P.distance(position), 2));
+        double scalar = Kc + (Kl * position.distance(P)) + (Kq * Math.pow(position.distance(P), 2));
 
-        int redValue = (int)(this.color.getRed() / scalar);
-        int greenValue = (int)(this.color.getGreen() / scalar);
-        int blueValue = (int)(this.color.getBlue() / scalar);
-        Color newColor = new Color(redValue, greenValue, blueValue);
+        int redValue = (int)(this.color.getRed() * scalar);
+        int greenValue = (int)(this.color.getGreen() * scalar);
+        int blueValue = (int)(this.color.getBlue() * scalar);
+        Color newColor = new Color(clamp(redValue), clamp(greenValue), clamp(blueValue));
 
         return newColor;
     }

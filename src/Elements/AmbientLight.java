@@ -7,7 +7,7 @@ import java.awt.*;
 public class AmbientLight extends Light {
     public AmbientLight() {
         super();
-        this.Ka = 1;
+        this.Ka = 0.5;
     }
 
     /**
@@ -17,7 +17,7 @@ public class AmbientLight extends Light {
      */
     public AmbientLight(Color color, double Ka){
         super(color);
-        this.Ka = Ka;
+        this.Ka = clamp(Ka);
     }
 
     /**

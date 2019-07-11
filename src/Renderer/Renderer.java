@@ -16,7 +16,7 @@ import java.util.List;
 public class Renderer {
     private Scene scene;
     private ImageWriter imageWriter;
-    private static final int RECURSION_LEVEL = 100;
+    private static final int RECURSION_LEVEL = 4;
 
     public Renderer() {
         this.scene = new Scene();
@@ -91,23 +91,29 @@ public class Renderer {
         Iterator<LightSource> lights = scene.getLightsIterator();//_image = new BufferedImage(_imageWidth, _imageHeight, BufferedImage.TYPE_INT_RGB);Im
         while (lights.hasNext()) {
             LightSource curLight = lights.next();
-            if(!occluded(curLight, point, geometry)) {
-                //fix this
-                Vector cameraRay = new Vector(scene.getCamera().getP0());
-                double Kd = geometry.getMaterial().getKd();
-                double Ks = geometry.getMaterial().getKs();
-                Vector N = geometry.getNormal(point);
-                Vector L = curLight.getL(point);
-                int shininess = geometry.getMaterial().getNShininess();
-                Color intensity = curLight.getIntensity(point);
 
-                //System.out.println("In light" + curLight);
-                Color diffuseColor = calcDiffusiveComp(Kd, N, L, intensity);
-                diffuseLight = addColors(diffuseLight, diffuseColor);
+            //Ray rayToLight = new Ray(point, new Vector(curLight.getL(point)).scalarMultiply(-1.0).normalize());
+            //rayToLight.setP0(rayToLight.getP0().add(rayToLight.getDirection().scalarMultiply(.0000001)));
+            //Map<Geometry, List<Point3d>> blockinglight = getSceneRayIntersections(rayToLight);
+            //if(Math.signum(curLight.getL(point).dotProduct(geometry.getNormal(point))) != Math.signum(new Vector(scene.getCamera().getP0().subtract(point)).dotProduct(geometry.getNormal(point)))) {
+                if (!notoccluded(curLight, point, geometry)) {
+                    //fix this
+                    Vector cameraRay = new Vector(scene.getCamera().getP0());
+                    double Kd = geometry.getMaterial().getKd();
+                    double Ks = geometry.getMaterial().getKs();
+                    Vector N = geometry.getNormal(point);
+                    Vector L = curLight.getL(point);
+                    int shininess = geometry.getMaterial().getNShininess();
+                    Color intensity = curLight.getIntensity(point);
 
-                Color specularColor = calcSpecularComp(Ks, cameraRay, N, L, shininess, intensity);
-                specularLight = addColors(specularLight, specularColor);
-            }
+                    //System.out.println("In light" + curLight);
+                    Color diffuseColor = calcDiffusiveComp(Kd, N, L, intensity);
+                    diffuseLight = addColors(diffuseLight, diffuseColor);
+
+                    Color specularColor = calcSpecularComp(Ks, cameraRay, N, L, shininess, intensity);
+                    specularLight = addColors(specularLight, specularColor);
+                }
+            //}
         }
 
 
@@ -131,10 +137,10 @@ public class Renderer {
         //Color refractedLight = multiplyToColor(Kt, refractedColor);
 
         List<Color>colors = new ArrayList<Color>();
-        colors.add(ambientLight);
-        colors.add(emissionLight);
+        //colors.add(ambientLight);
+        //colors.add(emissionLight);
         colors.add(diffuseLight);
-        colors.add(specularLight);
+        //colors.add(specularLight);
         //colors.add(reﬂectedLight);
         //colors.add(refractedLight);
 
@@ -201,23 +207,23 @@ public class Renderer {
         return newColor;
     }
 
-    private boolean occluded(LightSource light, Point3d point, Geometry geometry) {
+    private boolean notoccluded(LightSource light, Point3d point, Geometry geometry) {
         Vector lightDirection = light.getL(point);
-        lightDirection.scalarMultiply(-1.0);
+        lightDirection = lightDirection.scalarMultiply(-1.0);
 
         Point3d geometryPoint = new Point3d(point);
 
         Vector epsVector = new Vector(geometry.getNormal(point));
-        epsVector.scalarMultiply(2.0);
-        geometryPoint.add(epsVector);
+        epsVector = epsVector.scalarMultiply(2.0);
+        geometryPoint = geometryPoint.add(epsVector);
 
         Ray lightRay = new Ray(geometryPoint, lightDirection);
 
         Map<Geometry, List<Point3d>> intersectionPoints = getSceneRayIntersections(lightRay);
 
-        if(geometry instanceof FlatGeometry) {
-            intersectionPoints.remove(geometry);
-        }
+        //if(geometry instanceof FlatGeometry) {
+        //    intersectionPoints.remove(geometry);
+        //}
 
         for (Map.Entry<Geometry, List<Point3d>> entry: intersectionPoints.entrySet()) {
             if (entry.getKey().getMaterial().getKt() == 0) {
@@ -287,5 +293,25 @@ public class Renderer {
         }
 
         return intersectionPoints;
+    }
+
+    private Map<Geometry, List<Point3d>> getSceneRayIntersections2(Ray r) {
+        //Gets an iterator so we can look at all the geometries in a scene
+        Iterator<Geometry> geometriesIterator = scene.getGeometriesIterator();
+        //Initializes a HashMap to hold all the points of intersection and the geometries with which they're associated
+        Map<Geometry, List<Point3d>> totalSceneIntersections = new HashMap<Geometry, List<Point3d>>();
+
+        //Loops over all the geometries and for each...
+        while(geometriesIterator.hasNext()) {
+            Geometry geometry = geometriesIterator.next();
+            //Finds the points of intersection with the given ray
+            List<Point3d> geometrysIntersectionList = geometry.findIntersections(r);
+            //And adds then to the master list if it's empty
+            if(!geometrysIntersectionList.isEmpty()) {
+                totalSceneIntersections.put(geometry, geometrysIntersectionList);
+            }
+        }
+
+        return totalSceneIntersections;
     }
 }

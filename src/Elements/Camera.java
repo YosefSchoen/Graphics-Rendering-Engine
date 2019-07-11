@@ -11,9 +11,9 @@ public class Camera {
     //empty constructor
     public Camera() {
         this.p0 = new Point3d();
-        this.vUp = new Vector(new Point3d(new Coordinate(1), new Coordinate(1), new Coordinate(1)));
-        this.vTo = new Vector(new Point3d(new Coordinate(1), new Coordinate(1), new Coordinate(1)));
-        this.vRight = new Vector(new Point3d(new Coordinate(1), new Coordinate(1), new Coordinate(1)));
+        this.vUp = new Vector(0, 1, 0);
+        this.vTo = new Vector(0, 0, -1);
+        this.vRight = new Vector(1, 0, 0);
     }
 
     //constructor

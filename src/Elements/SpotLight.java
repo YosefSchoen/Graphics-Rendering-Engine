@@ -11,7 +11,7 @@ public class SpotLight extends PointLight{
     }
 
     public SpotLight(Color color, Point3d position, double Kc, double Kl, double Kq, Vector direction) {
-        super(color, position, Kc, Kl, Kq);
+        super(color, position, clamp(Kc), clamp(Kl), clamp(Kq));
         this.direction = direction;
     }
 
@@ -25,16 +25,20 @@ public class SpotLight extends PointLight{
         double scalar = getKc() + (getKl()*P.distance(getPosition())) + (getKq()*Math.pow(P.distance(getPosition()), 2));
 
         //Vector L = new Vector(getPosition());
-        Vector L = new Vector(P);
-        L = L.normalize();
+        Vector L = getL(P);
         setDirection(direction.normalize());
 
         int redValue = (int)((this.color.getRed() * (direction.dotProduct(L))) / scalar);
         int greenValue = (int)((this.color.getGreen() * (direction.dotProduct(L)))/ scalar);
         int blueValue = (int)((this.color.getBlue() * (direction.dotProduct(L)))/ scalar);
-        Color newColor = new Color(redValue, greenValue, blueValue);
+
+        Color newColor = new Color(clamp(redValue), clamp(greenValue), clamp(blueValue));
 
         return newColor;
+    }
+
+    public Vector getL(Point3d point){
+        return new Vector(point.subtract(getPosition())).normalize();
     }
 
     public Vector getDirection() {
