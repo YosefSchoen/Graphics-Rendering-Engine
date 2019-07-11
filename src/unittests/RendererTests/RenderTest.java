@@ -62,11 +62,10 @@ public class RenderTest {
         //lights.add(spotLight);
 
         sphere1.setMaterial(new Material(0.5, 0.5, 0.5, 0, 2));
-<<<<<<< Updated upstream
+
         sphere1.setEmission(new Color(0, 0, 60));
-=======
+
         sphere1.setEmission(new Color(0, 0, 80));
->>>>>>> Stashed changes
 
         sphere2.setMaterial(new Material(0.5, 0.5, 0.5, 0, 2));
         sphere2.setEmission(new Color(100, 0, 0));
