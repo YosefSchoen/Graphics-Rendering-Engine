@@ -10,6 +10,7 @@ import Primitives.Vector;
 import Scene.Scene;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.List;
 
@@ -63,6 +64,7 @@ public class Renderer {
                 if (intersectionPoints.isEmpty()) {
                     imageWriter.writePixel(i, j, this.scene.getBackground());
                 }
+
                 else {
                     Map<Geometry, Point3d> closestPoint = getClosestPoint(intersectionPoints);
                     Geometry geometry = (Geometry)closestPoint.keySet().toArray()[0];
@@ -97,7 +99,6 @@ public class Renderer {
             //Map<Geometry, List<Point3d>> blockinglight = getSceneRayIntersections(rayToLight);
             //if(Math.signum(curLight.getL(point).dotProduct(geometry.getNormal(point))) != Math.signum(new Vector(scene.getCamera().getP0().subtract(point)).dotProduct(geometry.getNormal(point)))) {
                 if (notoccluded(curLight, point, geometry)) {
-                    System.out.println(geometry);
                     //fix this
                     Vector cameraRay = new Vector(scene.getCamera().getP0());
                     double Kd = geometry.getMaterial().getKd();
@@ -119,31 +120,39 @@ public class Renderer {
 
 
         // Recursive call for a reﬂected ray 
-        //Ray reﬂectedRay = constructReﬂectedRay(geometry.getNormal(point), point, inRay);
-        //Map<Geometry, Point3d> reﬂectedEntry = ﬁndClosesntIntersection(reﬂectedRay);
-        //Geometry reflectedGeometry = (Geometry)reﬂectedEntry.keySet().toArray()[0];
-        //Point3d reflectedPoint = (Point3d)reﬂectedEntry.values().toArray()[0];
-        //Color reﬂectedColor = calcColor(reflectedGeometry, reflectedPoint,reﬂectedRay, level);
-        //double Kr = geometry.getMaterial().getKr();
-        //Color reﬂectedLight = multiplyToColor(Kr, reﬂectedColor);
+        Ray reﬂectedRay = constructReﬂectedRay(geometry.getNormal(point), point, inRay);
+        Map<Geometry, Point3d> reﬂectedEntry = ﬁndClosesntIntersection(reﬂectedRay);
+        Color reﬂectedLight = new Color(0, 0, 0);
+
+        if (!reﬂectedEntry.isEmpty()) {
+            Geometry reflectedGeometry = (Geometry)reﬂectedEntry.keySet().toArray()[0];
+            Point3d reflectedPoint = (Point3d)reﬂectedEntry.values().toArray()[0];
+            Color reﬂectedColor = calcColor(reflectedGeometry, reflectedPoint,reﬂectedRay, level + 1);
+            double Kr = geometry.getMaterial().getKr();
+            reﬂectedLight = multiplyToColor(Kr, reﬂectedColor);
+        }
 
 
         // Recursive call for a refracted ray
-        //Ray refractedRay = constructRefractedRay(geometry.getNormal(point), point, inRay);
-        //Map<Geometry, Point3d> refractedEntry = ﬁndClosesntIntersection(reﬂectedRay);
-        //Geometry refractedGeometry = (Geometry)reﬂectedEntry.keySet().toArray()[0];
-        //Point3d refractedPoint = (Point3d)reﬂectedEntry.values().toArray()[0];
-        //Color refractedColor = calcColor(refractedGeometry, refractedPoint, reﬂectedRay, level);
-        //double Kt = geometry.getMaterial().getKt();
-        //Color refractedLight = multiplyToColor(Kt, refractedColor);
+        Ray refractedRay = constructRefractedRay(geometry.getNormal(point), point, inRay);
+        Map<Geometry, Point3d> refractedEntry = ﬁndClosesntIntersection(refractedRay);
+        Color refractedLight = new Color(0, 0, 0);
+
+        if (!refractedEntry.isEmpty()) {
+            Geometry refractedGeometry = (Geometry)refractedEntry.keySet().toArray()[0];
+            Point3d refractedPoint = (Point3d) refractedEntry.values().toArray()[0];
+            Color refractedColor = calcColor(refractedGeometry, refractedPoint, reﬂectedRay, level + 1);
+            double Kt = geometry.getMaterial().getKt();
+            refractedLight = multiplyToColor(Kt, refractedColor);
+        }
 
         List<Color>colors = new ArrayList<Color>();
-        //colors.add(ambientLight);
+        colors.add(ambientLight);
         colors.add(emissionLight);
         colors.add(diffuseLight);
-        //colors.add(specularLight);
-        //colors.add(reﬂectedLight);
-        //colors.add(refractedLight);
+        colors.add(specularLight);
+        colors.add(reﬂectedLight);
+        colors.add(refractedLight);
 
         Color IO = addColors(colors);
 

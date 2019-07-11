@@ -1,4 +1,4 @@
-package RendererTests;
+package unittests.RendererTests;
 
 import Elements.*;
 import Geometries.Geometry;
@@ -62,12 +62,17 @@ public class RenderTest {
         //lights.add(spotLight);
 
         sphere1.setMaterial(new Material(0.5, 0.5, 0.5, 0, 2));
+<<<<<<< Updated upstream
         sphere1.setEmission(new Color(0, 0, 60));
+=======
+        sphere1.setEmission(new Color(0, 0, 80));
+>>>>>>> Stashed changes
 
         sphere2.setMaterial(new Material(0.5, 0.5, 0.5, 0, 2));
         sphere2.setEmission(new Color(100, 0, 0));
+        sphere2.setMaterial(new Material(0.5, 0.5, 0.5, 0, 2));
 
-        //triangle.setEmission(new Color(255, 0, 0));
+        triangle.setEmission(new Color(255, 0, 0));
 
         Point3d directionPoint = new Point3d(0, 1.5, -1);
         Point3d planePoint = new Point3d(0, 0, -60);
