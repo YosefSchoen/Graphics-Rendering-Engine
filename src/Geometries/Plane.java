@@ -45,7 +45,7 @@ public class Plane extends Geometry implements FlatGeometry{
 
         Vector t1 = this.Q1.subtract(this.Q);
         Vector t2 = this.Q2.subtract(this.Q);
-        this.N = t1.crossProduct(t2);
+        this.N = t1.crossProduct(t2).normalize();
     }
 
     //alternative constructor 3 points
@@ -57,7 +57,7 @@ public class Plane extends Geometry implements FlatGeometry{
 
         Vector t1 = this.Q1.subtract(this.Q);
         Vector t2 = this.Q2.subtract(this.Q);
-        this.N = t1.crossProduct(t2);
+        this.N = t1.crossProduct(t2).normalize();
     }
 
     //copy constructor

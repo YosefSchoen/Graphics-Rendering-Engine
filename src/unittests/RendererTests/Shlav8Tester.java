@@ -21,14 +21,10 @@ public class Shlav8Tester {
 		
 		Scene scene = new Scene();
 		scene.setScreenDistance(100);
-		scene.setBackground(new Color(0, 0, 0));
+		scene.setBackground(new Color(60, 60, 60));
 
-		/*double s1Radius = 10;
-        Point3d s1Center = new Point3d(0, 0, -49); //sphere1 parameters
-        Sphere sphere1 = new Sphere(s1Radius, s1Center); //geometry parameter
-        sphere1.setMaterial(new Material(0.5, 0.5, 0.5, 0, 2));
-        sphere1.setEmission(new Color(0, 0, 60));
-        */
+
+
 		double radius = 800;
 		Point3d center = new Point3d(0.0 ,0.0 ,-1000.0);
 		Sphere sphere = new Sphere(radius, center);
@@ -36,19 +32,20 @@ public class Shlav8Tester {
 		Color emissions = new Color(0,0,100);
 		sphere.setEmission(emissions);
 
-		Material m = new Material(0.01, 0.0001, 0.00001, 0.01, 1);
-		m.setNShininess(20);
+		Material m = new Material(0.01, 0.0001, 0, 0, 1);
+        //Material m = new Material(1, 1, 1, 1, 1);
+		m.setNShininess(2);
 		sphere.setMaterial(m);
 
         scene.addGeometry(sphere);
 
-		Color amColor = new Color(150, 50, 50);
+		Color amColor = new Color(50, 50, 50);
         AmbientLight ambientLight = new AmbientLight(amColor, 0.5);
         scene.setAmbientLight(ambientLight);
 
-		Color colorPL = new Color(255, 100, 100);
-		Point3d pointPL = new Point3d(-200, -200, -100);
-		PointLight pointLight = new PointLight(colorPL, pointPL, 0.1, 0.00001, 0.000005);
+		Color colorPL = new Color(60, 60, 100);
+		Point3d pointPL = new Point3d(-200, -200, -500);
+		PointLight pointLight = new PointLight(colorPL, pointPL, 0.9, 0.0, 0.0);
 		scene.addLight(pointLight);
 
 		ImageWriter imageWriter = new ImageWriter("Point Test1", 500, 500, 500, 500);
@@ -56,8 +53,6 @@ public class Shlav8Tester {
 		Renderer render = new Renderer(scene, imageWriter);
 		
 		render.renderImage();
-		//render.printGrid(50);
-		//imageWriter.writeToimage();
 	}
 
 
@@ -65,7 +60,7 @@ public class Shlav8Tester {
 	public void pointLightTest2(){
 		Scene scene = new Scene();
 		scene.setScreenDistance(100);
-		scene.setBackground(new Color(0, 0, 0));
+		scene.setBackground(new Color(60, 60, 60));
 
 		double radius = 800;
 		Point3d center = new Point3d(0,0, -1000);
@@ -75,7 +70,7 @@ public class Shlav8Tester {
 		sphere.setEmission(emissionsS);
 
 		Material m = new Material();
-		m.setNShininess(20);
+		m.setNShininess(2);
 		sphere.setMaterial(m);
 		
 		Point3d pointT11 = new Point3d(3500, 3500, -2000);
@@ -99,11 +94,11 @@ public class Shlav8Tester {
 		scene.addGeometry(triangle);
 		scene.addGeometry(triangle2);
 
-        Color amColor = new Color(150, 50, 50);
+        Color amColor = new Color(50, 50, 50);
         AmbientLight ambientLight = new AmbientLight(amColor, 0.5);
         scene.setAmbientLight(ambientLight);
 
-		Color colorPL = new Color(255,100,100);
+		Color colorPL = new Color(60,60,100);
 		Point3d pointPL = new Point3d(200,200, -100);
 		PointLight pointLight = new PointLight(colorPL, pointPL, 0, 0.000001, 0.0000005);
 		scene.addLight(pointLight);
@@ -134,7 +129,7 @@ public class Shlav8Tester {
 		sphere.setEmission(color);
 
 		Material m = new Material();
-		m.setNShininess(20);
+		m.setNShininess(2);
 		sphere.setMaterial(m);
 
 		scene.addGeometry(sphere);
@@ -171,7 +166,7 @@ public class Shlav8Tester {
 		Color color = new Color(0,0,100);
 		sphere.setEmission(color);
 		Material m = new Material();
-		m.setNShininess(20);
+		m.setNShininess(2);
 		sphere.setMaterial(m);
 		scene.addGeometry(sphere);
 
@@ -185,7 +180,7 @@ public class Shlav8Tester {
 		triangle.setEmission(color1);
 
 		Material m1 = new Material();
-		m1.setNShininess(4);
+		m1.setNShininess(2);
 		triangle.setMaterial(m);
 		scene.addGeometry(triangle);
 

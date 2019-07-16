@@ -9,7 +9,7 @@ public abstract class Light {
 
     public Light() {
         // Create a new color for the light, default white
-        color = new Color(255, 255, 255);
+        color = new Color(0, 0, 0);
     }
 
     public Light(int r, int g, int b) {

@@ -67,7 +67,8 @@ public class PointLight extends Light implements LightSource {
 
     //needs to be made
     public Color getIntensity(Point3d P) {
-        double scalar = Kc + (Kl * position.distance(P)) + (Kq * Math.pow(position.distance(P), 2));
+        //double scalar = Kc + (Kl * position.distance(P)) + (Kq * Math.pow(position.distance(P), 2));
+        double scalar = Kc + Math.pow(Kl, position.distance(P)) + Math.pow(Kq, Math.pow(position.distance(P), 2));
 
         int redValue = (int)(this.color.getRed() * scalar);
         int greenValue = (int)(this.color.getGreen() * scalar);
