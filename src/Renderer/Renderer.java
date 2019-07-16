@@ -2,7 +2,6 @@ package Renderer;
 
 import Elements.Light;
 import Elements.LightSource;
-import Geometries.FlatGeometry;
 import Primitives.Point3d;
 import Primitives.Ray;
 import Geometries.Geometry;
@@ -10,7 +9,6 @@ import Primitives.Vector;
 import Scene.Scene;
 
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.List;
 
@@ -89,6 +87,8 @@ public class Renderer {
         Color emissionLight = geometry.getEmission();
         Color diffuseLight = new Color(0, 0, 0);
         Color specularLight = new Color(0, 0, 0);
+        Color reﬂectedLight = new Color(0, 0, 0);
+        Color refractedLight = new Color(0, 0, 0);
 
         Iterator<LightSource> lights = scene.getLightsIterator();//_image = new BufferedImage(_imageWidth, _imageHeight, BufferedImage.TYPE_INT_RGB);Im
         while (lights.hasNext()) {
@@ -122,7 +122,7 @@ public class Renderer {
         // Recursive call for a reﬂected ray 
         Ray reﬂectedRay = constructReﬂectedRay(geometry.getNormal(point), point, inRay);
         Map<Geometry, Point3d> reﬂectedEntry = ﬁndClosesntIntersection(reﬂectedRay);
-        Color reﬂectedLight = new Color(0, 0, 0);
+
 
         if (!reﬂectedEntry.isEmpty()) {
             Geometry reflectedGeometry = (Geometry)reﬂectedEntry.keySet().toArray()[0];
@@ -132,11 +132,9 @@ public class Renderer {
             reﬂectedLight = multiplyToColor(Kr, reﬂectedColor);
         }
 
-
         // Recursive call for a refracted ray
         Ray refractedRay = constructRefractedRay(geometry.getNormal(point), point, inRay);
         Map<Geometry, Point3d> refractedEntry = ﬁndClosesntIntersection(refractedRay);
-        Color refractedLight = new Color(0, 0, 0);
 
         if (!refractedEntry.isEmpty()) {
             Geometry refractedGeometry = (Geometry)refractedEntry.keySet().toArray()[0];
@@ -173,6 +171,7 @@ public class Renderer {
 
     private Color calcSpecularComp(double Ks, Vector cameraRay, Vector normal, Vector L, int nShininess, Color lightIntensity) {
         //IL.scalarMultiply(Ks * vector.dotProduct(normal));
+
 
         Vector R = L.subtract(normal.scalarMultiply(2 * L.dotProduct(normal)));
 
@@ -237,12 +236,11 @@ public class Renderer {
 
         for (Map.Entry<Geometry, List<Point3d>> entry: intersectionPoints.entrySet()) {
             if (entry.getKey().getMaterial().getKt() == 0) {
-                return true;
+                return false;
             }
-            return false;
         }
 
-        return !intersectionPoints.isEmpty();
+        return true;
     }
 
     private Ray constructReﬂectedRay(Vector normal, Point3d point, Ray inRay) {
@@ -252,18 +250,8 @@ public class Renderer {
     }
 
     private Ray constructRefractedRay(Vector normal, Point3d point, Ray inRay) {
-        double n1 = 1;
-        double n2 = 1;
+        Ray R = new Ray(point, inRay.getDirection());
 
-        double cosThetaI = Math.cos(inRay.getDirection().dotProduct(normal) / (inRay.getDirection().length() * normal.length()));
-        double cosThetaR = (n1 * Math.sin(Math.acos(cosThetaI))) / n2;
-
-        //double cosThetaR = Math.cos(normal.scalarMultiply(-1.0).dotProduct(inRay.getDirection()) / (normal.length() * inRay.getDirection().length()));
-
-
-        Vector direction = normal.subtract(inRay.getDirection()).scalarMultiply(cosThetaI - cosThetaR);
-
-        Ray R = new Ray(point, direction);
         return R;
     }
 

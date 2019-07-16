@@ -15,14 +15,14 @@ public abstract class Geometry {
         this.emission = new Color(0, 0, 0);
     }
 
-    public Geometry(Color emission, Material material) {
-        this.emission = emission;
+    public Geometry(Material material, Color emission) {
         this.material = material;
+        this.emission = emission;
     }
 
     public Geometry(Color emission) {
-        this.emission = emission;
         this.material = new Material();
+        this.emission = emission;
     }
 
     public Geometry(Geometry other) {

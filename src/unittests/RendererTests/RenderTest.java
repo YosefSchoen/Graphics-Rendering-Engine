@@ -12,6 +12,7 @@ import Primitives.Vector;
 import Renderer.Renderer;
 import Scene.Scene;
 import Renderer.ImageWriter;
+import org.junit.Test;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -19,71 +20,91 @@ import java.util.List;
 
 
 public class RenderTest {
-    Color color = new Color(0, 0, 0);
+    int width = 500; //ImageWriters parameter
+    int height = 500; //ImageWriters parameter
+    int Nx = 500; //ImageWriters parameter
+    int Ny = 500; //ImageWriters parameter
 
-            String sceneName = "scene test"; //scene parameter
-            Color background = new Color(20, 20, 20); //scene parameter
+    double Ka = 0.3; //ambientLight parameter
+    double screenDistance = 200; //scene parameter
+    double kcP = 0.5; //point light parameter
+    double klP = 0.5; //point light parameter
+    double kqP = 0.5; //point light parameter
+    double kcS = 50; //spot light parameter
+    double klS = 50; //spot light parameter
+    double kqS = 50; //spot light parameter
+    double s1Radius = 10; //sphere1 parameters
+    double s2Radius = 50; //sphere2 parameters
 
-                //Color amColor = new Color(150, 50, 250); //ambientLight parameter
-                Color amColor = new Color(10, 10, 10); //ambientLight parameter
-                double Ka = 3; //ambientLight parameter
-            AmbientLight ambientLight = new AmbientLight(amColor, Ka); //scene parameter
-                DirectionalLight directionalLight = new DirectionalLight(new Color(0, 255, 255), new Vector(-.5, -.5, 0)); //light parameter
-                PointLight pointLight = new PointLight(new Color(0, 255, 0), new Point3d(1, 2, -40), .5, .5, .5); //light parameter
-                SpotLight spotLight = new SpotLight(new Color(255, 255, 255), new Point3d(), 50, 50, 50, new Vector(0, 0, -1)); //light parameter
-            List<LightSource> lights = new ArrayList<>(); //scene parameter
 
-                Material spm = new Material(0.5, 0.5, 0.5, 0, 2);
-                Sphere sphere1 = new Sphere(3, new Point3d(0, 0, -49)); //geometry parameter
-                Sphere sphere2 = new Sphere(3, new Point3d(3, 3, -100)); //geometry parameter
-                    Point3d pTr = new Point3d(2, 2, -3); //triangle parameter
-                Triangle triangle = new Triangle(new Point3d(30, 0, -49), new Point3d(0, 30, -49), new Point3d(30, 30, -49), new Material(), new Color(0, 255, 0)); //geometry parameter
-            List<Geometry> geometries = new ArrayList<Geometry>(); //scene parameter
+    String imageName = "test"; //ImageWriters parameter
+    String sceneName = "scene test"; //scene parameter
 
-                Point3d p0 = new Point3d(); //camera parameter
-                Vector vUp = new Vector(new Point3d(0, 1, 0)); //camera parameter
-                Vector vTo = new Vector(new Point3d(0, 0, -1)); //camera parameter
-            Camera camera = new Camera(p0, vUp, vTo); //scene parameter
+    Point3d p0 = new Point3d(); //camera parameter
+    Point3d poPoint = new Point3d(1, 2, -40); //point light parameter
+    Point3d spPoint = new Point3d(); //spot light parameter
+    Point3d s1Center = new Point3d(0, 0, -49); //sphere1 parameters
+    Point3d s2Center = new Point3d(3, 3, -100); //sphere2 parameters
+    Point3d tP1 = new Point3d(30, 0, -49);
+    Point3d tP2 = new Point3d(0, 30, -49);
+    Point3d tP3 = new Point3d(30, 30, -49);
 
-            double screenDistance = 200; //scene parameter
-        Scene scene = new Scene(sceneName, background, ambientLight, lights, geometries, camera, screenDistance); //Renderer parameters
-            String imageName = "test"; //ImageWriters parameter
-            int width = 100; //ImageWriters parameter
-            int height = 100; //ImageWriters parameter
-            int Nx = 500; //ImageWriters parameter
-            int Ny = 500; //ImageWriters parameter
-        ImageWriter imageWriter = new ImageWriter(imageName, width, height, Nx, Ny); //Renderer parameters
+    Vector vUp = new Vector(0, 1, 0); //camera parameter
+    Vector vTo = new Vector(0, 0, -1); //camera parameter
+    Vector diVector = new Vector(-0.5, -0.5, 0); //directional light parameter
+    Vector spVector = new Vector(0, 0, -1); //spot light parameter
+
+    Color background = new Color(20, 20, 20); //scene parameter
+    Color amColor = new Color(100, 100, 100); //ambientLight parameter
+    Color diColor = new Color(0, 255, 255); //directional light parameter
+    Color poColor = new Color(0, 255, 0); //point light parameter
+    Color spColor = new Color(255, 255, 255); //spot light parameter
+
+    List<LightSource> lights = new ArrayList<>(); //scene parameter
+    AmbientLight ambientLight = new AmbientLight(amColor, Ka); //scene parameter
+    DirectionalLight directionalLight = new DirectionalLight(diColor, diVector); //light parameter
+    PointLight pointLight = new PointLight(poColor, poPoint, kcP, klP, kqP);; //light parameter
+    SpotLight spotLight = new SpotLight(spColor, spPoint, kcS, klS, kqS, spVector); //light parameter
+
+    List<Geometry> geometries = new ArrayList<Geometry>(); //scene parameter
+    Sphere sphere1 = new Sphere(s1Radius, s1Center); //geometry parameter
+    Sphere sphere2 = new Sphere(s2Radius, s2Center); //geometry parameter
+    Triangle triangle = new Triangle(tP1, tP2, tP3); //geometry parameter
+
+    Camera camera = new Camera(p0, vUp, vTo); //scene parameter
+    Scene scene = new Scene(sceneName, background, ambientLight, lights, geometries, camera, screenDistance); //Renderer parameters
+    ImageWriter imageWriter = new ImageWriter(imageName, width, height, Nx, Ny); //Renderer parameters
     Renderer renderer = new Renderer(scene, imageWriter);
 
     @org.junit.Test
     public void RenderTest() {
-        //lights.add(directionalLight);
+        lights.add(directionalLight);
         lights.add(pointLight);
-        //lights.add(spotLight);
+        lights.add(spotLight);
 
         sphere1.setMaterial(new Material(0.5, 0.5, 0.5, 0, 2));
-
         sphere1.setEmission(new Color(0, 0, 60));
 
-        sphere1.setEmission(new Color(0, 0, 80));
 
         sphere2.setMaterial(new Material(0.5, 0.5, 0.5, 0, 2));
         sphere2.setEmission(new Color(100, 0, 0));
-        sphere2.setMaterial(new Material(0.5, 0.5, 0.5, 0, 2));
 
         triangle.setEmission(new Color(255, 0, 0));
 
         Point3d directionPoint = new Point3d(0, 1.5, -1);
         Point3d planePoint = new Point3d(0, 0, -60);
         Vector direction = new Vector(directionPoint);
-        Plane plane2 = new Plane(planePoint, direction, new Material(), new Color(10, 10, 100));
+        Plane plane2 = new Plane(planePoint, direction);
+        plane2.setMaterial(new Material());
+        plane2.setEmission(new Color(10, 10, 100));
 
         geometries.add(sphere1);
         geometries.add(sphere2);
-        //geometries.add(triangle);
+        geometries.add(triangle);
         //geometries.add(new Plane(triangle.getP1(), triangle.getNormal(null)));
         //geometries.add(plane2);
 
+        renderer.getScene().setAmbientLight(ambientLight);
         renderer.renderImage();
     }
 
@@ -144,5 +165,24 @@ public class RenderTest {
         render.renderImage();
         //Prints it all to a file
         imageWriter.writeToimage();
+    }
+
+    @Test
+    public void dovidAndYoTest() {
+        Scene scene = new Scene();
+        scene.setSceneName("The coolest scene");
+        scene.setScreenDistance(100);
+        scene.setBackground(new Color(0, 0, 0));
+        scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.2));
+        Sphere sphere = new Sphere(50, new Point3d(0, 0, -150));
+        sphere.setMaterial(new Material(0.5, 0.5, 0.5, 0.5, 5));
+        sphere.setEmission(new Color(0, 0, 0));
+        PointLight pointLight = new PointLight(new Color(0, 255, 0), new Point3d(0, 0, -90), 0, 0.00001, 0.00001);
+        scene.addGeometry(sphere);
+        scene.addLight(pointLight);
+        ImageWriter imageWriter = new ImageWriter("coolscene", 500, 500, 500, 500);
+        Renderer renderer = new Renderer(scene, imageWriter);
+        renderer.renderImage();
+        //imageWriter.writeToimage();
     }
 }

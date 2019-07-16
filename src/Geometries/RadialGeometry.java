@@ -10,11 +10,18 @@ import java.awt.*;
 public abstract class RadialGeometry extends Geometry {
    //empty constructor
     public RadialGeometry() {
+        super();
         this.radius = 0;
     }
 
     //constructor
     public RadialGeometry(double radius) {
+        this.radius = radius;
+    }
+
+    //alternate constructor
+    public RadialGeometry(double radius, Material material,  Color color) {
+        super(material, color);
         this.radius = radius;
     }
 

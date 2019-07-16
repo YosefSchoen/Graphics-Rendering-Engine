@@ -1,6 +1,7 @@
 package unittests.RendererTests;
 
 
+import Elements.AmbientLight;
 import org.junit.Test;
 import java.awt.Color;
 import Elements.PointLight;
@@ -20,7 +21,14 @@ public class Shlav8Tester {
 		
 		Scene scene = new Scene();
 		scene.setScreenDistance(100);
+		scene.setBackground(new Color(0, 0, 0));
 
+		/*double s1Radius = 10;
+        Point3d s1Center = new Point3d(0, 0, -49); //sphere1 parameters
+        Sphere sphere1 = new Sphere(s1Radius, s1Center); //geometry parameter
+        sphere1.setMaterial(new Material(0.5, 0.5, 0.5, 0, 2));
+        sphere1.setEmission(new Color(0, 0, 60));
+        */
 		double radius = 800;
 		Point3d center = new Point3d(0.0 ,0.0 ,-1000.0);
 		Sphere sphere = new Sphere(radius, center);
@@ -28,15 +36,19 @@ public class Shlav8Tester {
 		Color emissions = new Color(0,0,100);
 		sphere.setEmission(emissions);
 
-		Material m = new Material();
+		Material m = new Material(0.01, 0.0001, 0.00001, 0.01, 1);
 		m.setNShininess(20);
 		sphere.setMaterial(m);
 
-		scene.addGeometry(sphere);
+        scene.addGeometry(sphere);
+
+		Color amColor = new Color(150, 50, 50);
+        AmbientLight ambientLight = new AmbientLight(amColor, 0.5);
+        scene.setAmbientLight(ambientLight);
 
 		Color colorPL = new Color(255, 100, 100);
 		Point3d pointPL = new Point3d(-200, -200, -100);
-		PointLight pointLight = new PointLight(colorPL, pointPL, 0, 0.00001, 0.000005);
+		PointLight pointLight = new PointLight(colorPL, pointPL, 0.1, 0.00001, 0.000005);
 		scene.addLight(pointLight);
 
 		ImageWriter imageWriter = new ImageWriter("Point Test1", 500, 500, 500, 500);
@@ -44,9 +56,8 @@ public class Shlav8Tester {
 		Renderer render = new Renderer(scene, imageWriter);
 		
 		render.renderImage();
-		render.printGrid(50);
-		imageWriter.writeToimage();
-		
+		//render.printGrid(50);
+		//imageWriter.writeToimage();
 	}
 
 
@@ -54,6 +65,7 @@ public class Shlav8Tester {
 	public void pointLightTest2(){
 		Scene scene = new Scene();
 		scene.setScreenDistance(100);
+		scene.setBackground(new Color(0, 0, 0));
 
 		double radius = 800;
 		Point3d center = new Point3d(0,0, -1000);
@@ -87,8 +99,12 @@ public class Shlav8Tester {
 		scene.addGeometry(triangle);
 		scene.addGeometry(triangle2);
 
+        Color amColor = new Color(150, 50, 50);
+        AmbientLight ambientLight = new AmbientLight(amColor, 0.5);
+        scene.setAmbientLight(ambientLight);
+
 		Color colorPL = new Color(255,100,100);
-		Point3d pointPL = new Point3d(-200,200, -100);
+		Point3d pointPL = new Point3d(200,200, -100);
 		PointLight pointLight = new PointLight(colorPL, pointPL, 0, 0.000001, 0.0000005);
 		scene.addLight(pointLight);
 
@@ -97,8 +113,8 @@ public class Shlav8Tester {
 		Renderer render = new Renderer(scene, imageWriter);
 		
 		render.renderImage();
-		render.printGrid(50);
-		imageWriter.writeToimage();
+		//render.printGrid(50);
+		//imageWriter.writeToimage();
 	}
 	
 	
@@ -108,6 +124,7 @@ public class Shlav8Tester {
 		
 		Scene scene = new Scene();
 		scene.setScreenDistance(100);
+        scene.setBackground(new Color(0, 0, 0));
 
 		double radius = 800;
 		Point3d center = new Point3d(0,0, -1000);
@@ -122,10 +139,14 @@ public class Shlav8Tester {
 
 		scene.addGeometry(sphere);
 
+        Color amColor = new Color(150, 50, 50);
+        AmbientLight ambientLight = new AmbientLight(amColor, 0.5);
+        scene.setAmbientLight(ambientLight);
+
 		Color colorSL = new Color(255, 100, 100);
 		Point3d pointSL = new Point3d(-200, -200, -100);
 		Vector vectorSL =  new Vector(2, 2, -3);
-		SpotLight spotLight = new SpotLight(colorSL, pointSL, 0, 0.00001, 0.000005, vectorSL);
+		SpotLight spotLight = new SpotLight(colorSL, pointSL, 0.1, 0.00001, 0.000005, vectorSL);
 		scene.addLight(spotLight);
 	
 		ImageWriter imageWriter = new ImageWriter("Spot Test1", 500, 500, 500, 500);
@@ -133,14 +154,16 @@ public class Shlav8Tester {
 		Renderer render = new Renderer(scene, imageWriter);
 		
 		render.renderImage();
-		render.printGrid(50);
-		imageWriter.writeToimage();
+		//render.printGrid(50);
+		//imageWriter.writeToimage();
 	}
 	
 	@Test
 	public void spotLightTest2(){
 		Scene scene = new Scene();
 		scene.setScreenDistance(200);
+        scene.setBackground(new Color(0, 0, 0));
+
 		double radius = 500;
 		Point3d center = new Point3d(0,0,-1000);
 		Sphere sphere = new Sphere (radius, center);
@@ -165,6 +188,10 @@ public class Shlav8Tester {
 		m1.setNShininess(4);
 		triangle.setMaterial(m);
 		scene.addGeometry(triangle);
+
+        Color amColor = new Color(150, 50, 50);
+        AmbientLight ambientLight = new AmbientLight(amColor, 0.5);
+        scene.setAmbientLight(ambientLight);
 	
 		scene.addLight(new SpotLight(new Color(255, 100, 100), new Point3d(-200, -200, -150), 0.1, 0.00001, 0.000005,   new Vector(2, 2, -3)));
 	
@@ -183,10 +210,10 @@ public class Shlav8Tester {
 		
 		Scene scene = new Scene();
 		scene.setScreenDistance(100);
+        scene.setBackground(new Color(0, 0, 0));
 
-
-		Triangle triangle = new Triangle(new Point3d(3500, 3500, -2000), new Point3d( -3500, -3500, -1000), new Point3d(  3500, -3500, -2000), new Material(), new Color(0, 0, 0));
-		Color emissions1 = new Color(0,0,0);
+		Triangle triangle = new Triangle(new Point3d(3500, 3500, -2000), new Point3d( -3500, -3500, -1000), new Point3d(  3500, -3500, -2000), new Material(), new Color(250, 0, 0));
+		Color emissions1 = new Color(0,100,100);
 		triangle.setEmission(emissions1);
 
 		Triangle triangle2 = new Triangle(new Point3d(3500, 3500, -2000), new Point3d( -3500,  3500, -1000), new Point3d( -3500, -3500, -1000), new Material(), new Color(0, 0, 0));
@@ -195,6 +222,10 @@ public class Shlav8Tester {
 
 		scene.addGeometry(triangle);
 		scene.addGeometry(triangle2);
+
+        Color amColor = new Color(150, 50, 50);
+        AmbientLight ambientLight = new AmbientLight(amColor, 0.5);
+        scene.setAmbientLight(ambientLight);
 
 		scene.addLight(new SpotLight(new Color(255, 100, 100), new Point3d(200, 200, -100), 0, 0.000001, 0.0000005, new Vector(-2, -2, -3)));
 	

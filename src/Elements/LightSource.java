@@ -6,6 +6,6 @@ import Primitives.Vector;
 import java.awt.*;
 
 public interface LightSource {
-    public Color getIntensity(Point3d point3d);
-    public Vector getL(Point3d point3d);
+    Color getIntensity(Point3d point3d);
+    Vector getL(Point3d point3d);
 }

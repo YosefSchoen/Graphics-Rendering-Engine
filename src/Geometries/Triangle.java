@@ -14,19 +14,25 @@ import java.util.List;
 public class Triangle extends Geometry implements FlatGeometry{
     //empty constructor
     public Triangle() {
+        super();
         this.p1 = new Point3d();
         this.p2 = new Point3d();
         this.p3 = new Point3d();
     }
 
     //constructor
-    public Triangle(Point3d p1, Point3d p2, Point3d p3, Material mat, Color emi) {
+    public Triangle(Point3d p1, Point3d p2, Point3d p3) {
         this.p1 = p1;
         this.p2 = p2;
         this.p3 = p3;
+    }
 
-        this.setMaterial(mat);
-        this.setEmission(emi);
+    //alternative constructor
+    public Triangle(Point3d p1, Point3d p2, Point3d p3,Material material, Color color) {
+        super(material, color);
+        this.p1 = p1;
+        this.p2 = p2;
+        this.p3 = p3;
     }
 
     //copy constructor
@@ -124,7 +130,7 @@ public class Triangle extends Geometry implements FlatGeometry{
         List<Point3d> listToReturn = new ArrayList<>();
 
         //Creates a plane representing the plane that the triangle lives in
-        Plane planeEncompassingTriangle = new Plane(this.p1, this.p2, this.p3, new Material(), new Color(0, 0, 0));
+        Plane planeEncompassingTriangle = new Plane(this.p1, this.p2, this.p3);
         //Finds the point that the ray would intersect into that plane at
         List<Point3d> listOfPotentialPoints = planeEncompassingTriangle.findIntersections(P);
         //if it missed the plane entirely, it has no chance of hitting the triangle and we return an empty list

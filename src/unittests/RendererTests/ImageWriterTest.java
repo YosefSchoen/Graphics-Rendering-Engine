@@ -1,4 +1,4 @@
-package RendererTests;
+package unittests.RendererTests;;
 
 import Renderer.ImageWriter;
 
@@ -23,6 +23,7 @@ public class ImageWriterTest {
         int Ny = 1000;
 
         ImageWriter testImage = new ImageWriter(imageName, imageWidth, imageHeight, Nx, Ny);
+        testImage.writeToimage();
     }
 
     // Write image with lines

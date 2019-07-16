@@ -41,7 +41,7 @@ public class PointLight extends Light implements LightSource {
         int green = this.color.getGreen();
         int blue = this.color.getBlue();
 
-        return new Color(clamp((int)(red * factor)), clamp((int)(green * factor)), clamp((int)(blue * factor)));
+        return new Color(clamp((int)(red / factor)), clamp((int)(green / factor)), clamp((int)(blue / factor)));
     }
 
 
