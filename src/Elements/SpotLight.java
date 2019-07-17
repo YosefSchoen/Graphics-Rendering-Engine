@@ -2,6 +2,8 @@ package Elements;
 
 import Primitives.Point3d;
 import Primitives.Vector;
+import Utilities.Utilities;
+
 import java.awt.*;
 
 public class SpotLight extends PointLight{
@@ -23,16 +25,12 @@ public class SpotLight extends PointLight{
     @Override
     public Color getIntensity(Point3d P) {
         double scalar = getKc() + (getKl()*P.distance(getPosition())) + (getKq()*Math.pow(P.distance(getPosition()), 2));
-
+        scalar = scalar * direction.dotProduct(getL(P));
         //Vector L = new Vector(getPosition());
-        Vector L = getL(P);
+        //Vector L = getL(P);
         setDirection(direction.normalize());
 
-        int redValue = (int)((this.color.getRed() * (direction.dotProduct(L))) / scalar);
-        int greenValue = (int)((this.color.getGreen() * (direction.dotProduct(L)))/ scalar);
-        int blueValue = (int)((this.color.getBlue() * (direction.dotProduct(L)))/ scalar);
-
-        Color newColor = new Color(clamp(redValue), clamp(greenValue), clamp(blueValue));
+        Color newColor = Utilities.multiplyToColor(scalar, color);
 
         return newColor;
     }

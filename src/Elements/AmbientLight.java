@@ -1,6 +1,7 @@
 package Elements;
 
 import Primitives.Point3d;
+import Utilities.Utilities;
 
 import java.awt.*;
 
@@ -42,18 +43,7 @@ public class AmbientLight extends Light {
      * @return the scaled java color
      */
     public Color getIntensity(Point3d point) {
-        int newRed;
-        int newGreen;
-        int newBlue;
-
-        newRed = (int)(color.getRed() * Ka);
-
-        newGreen = (int)(color.getGreen() * Ka);
-
-        newBlue = (int)(color.getBlue() * Ka);
-
-
-        Color newColor = new Color(clamp(newRed), clamp(newGreen), clamp(newBlue));
+        Color newColor = Utilities.multiplyToColor(Ka, color);
         return newColor;
     }
 

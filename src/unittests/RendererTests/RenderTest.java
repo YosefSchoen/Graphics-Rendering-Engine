@@ -119,7 +119,7 @@ public class RenderTest {
         Triangle t3 = new Triangle(new Point3d(100, 0, -49), new Point3d(0, -100, -49), new Point3d(100, -100, -49), new Material(), new Color(255, 0, 255));
         Triangle t4 = new Triangle(new Point3d(-100, 0, -49), new Point3d(0, -100, -49), new Point3d(-100, -100, -49), new Material(), new Color(255, 255, 0));
 
-        AmbientLight am = new AmbientLight(new Color(100, 100, 100), 1);
+        AmbientLight am = new AmbientLight(new Color(100, 100, 100), 0.2);
 
         List<Geometry> geometrieslist = new ArrayList<>();
         geometrieslist.add(sphere);
@@ -128,12 +128,12 @@ public class RenderTest {
         geometrieslist.add(t3);
         geometrieslist.add(t4);
 
-        PointLight pl = new PointLight(new Color(255, 0, 0), new Point3d(50, 50, -60), 0.5, 0.5, 0.5);
+        PointLight pl = new PointLight(new Color(255, 255, 255), new Point3d(50, 50, -60), 0.5, 0.5, 0.5);
 
         List<LightSource> lightlist = new ArrayList<>();
         lightlist.add(pl);
 
-        Scene s = new Scene(sceneName, new Color(75, 127, 190), am, lightlist, geometrieslist, c, 50);
+        Scene s = new Scene(sceneName, new Color(60, 60, 60), am, lightlist, geometrieslist, c, 50);
         ImageWriter im = new ImageWriter(imageName + "1", 500, 500, 500, 500);
         Renderer ren = new Renderer(s, im);
 
@@ -172,12 +172,12 @@ public class RenderTest {
         Scene scene = new Scene();
         scene.setSceneName("The coolest scene");
         scene.setScreenDistance(100);
-        scene.setBackground(new Color(0, 0, 0));
+        scene.setBackground(new Color(60, 60, 60));
         scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.2));
         Sphere sphere = new Sphere(50, new Point3d(0, 0, -150));
         sphere.setMaterial(new Material(0.5, 0.5, 0.5, 0.5, 5));
         sphere.setEmission(new Color(0, 0, 0));
-        PointLight pointLight = new PointLight(new Color(0, 255, 0), new Point3d(0, 0, -90), 0, 0.00001, 0.00001);
+        PointLight pointLight = new PointLight(new Color(0, 255, 0), new Point3d(0, 0, -90), 2, 0.001, 0.01);
         scene.addGeometry(sphere);
         scene.addLight(pointLight);
         ImageWriter imageWriter = new ImageWriter("coolscene", 500, 500, 500, 500);

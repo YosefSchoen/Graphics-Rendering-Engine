@@ -1,7 +1,6 @@
 package Elements;
 
 import Primitives.Point3d;
-
 import java.awt.Color;
 
 public abstract class Light {

@@ -1,6 +1,5 @@
 package Elements;
 
-import Primitives.Coordinate;
 import Primitives.Point3d;
 import Primitives.Vector;
 import Primitives.Ray;

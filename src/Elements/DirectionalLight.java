@@ -2,7 +2,6 @@ package Elements;
 
 import Primitives.Point3d;
 import Primitives.Vector;
-import Elements.LightSource;
 import java.awt.*;
 
 

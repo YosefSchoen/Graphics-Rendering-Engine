@@ -1,12 +1,12 @@
 package Renderer;
 
-import Elements.Light;
 import Elements.LightSource;
 import Primitives.Point3d;
+import Primitives.Vector;
 import Primitives.Ray;
 import Geometries.Geometry;
-import Primitives.Vector;
 import Scene.Scene;
+import Utilities.Utilities;
 
 import java.awt.*;
 import java.util.*;
@@ -100,22 +100,22 @@ public class Renderer {
 
             if (notOccluded(curLight, point, geometry)) {
                 Color diffuseColor = calcDiffusiveColor(geometry, point, curLight);
-                diffuseLight = addColors(diffuseLight, diffuseColor);
+                diffuseLight = Utilities.addColors(diffuseLight, diffuseColor);
 
                 Color specularColor = calcSpecularColor(geometry, point, curLight);
-                specularLight = addColors(specularLight, specularColor);
+                specularLight = Utilities.addColors(specularLight, specularColor);
             }
         }
 
         List<Color>colors = new ArrayList<>();
-        //colors.add(ambientLight);
-        //colors.add(emissionLight);
+        colors.add(ambientLight);
+        colors.add(emissionLight);
         colors.add(diffuseLight);
         //colors.add(specularLight);
         //colors.add(reflectedLight);
         //colors.add(refractedLight);
 
-        Color IO = addColors(colors);
+        Color IO = Utilities.addColors(colors);
 
         return IO;
     }
@@ -133,16 +133,10 @@ public class Renderer {
     private Color calcDiffusiveComp(double Kd, Vector normal, Vector L, Color lightIntensity){
         //IL.scalarMultiply(Kd * normal.dotProduct(lightIntensity));
         //L = L.normalize();
-        double x = Math.abs(Kd * normal.dotProduct(L));
+        double scalar = Math.abs(Kd * normal.dotProduct(L));
 
-        int redValue = (int)(x * lightIntensity.getRed());
-        int greenValue = (int)(x * lightIntensity.getGreen());
-        int blueValue = (int)(x * lightIntensity.getBlue());
-
-
-        Color diffuseLight = new Color(Light.clamp(redValue), Light.clamp(greenValue), Light.clamp(blueValue));
-        //return new Color(1, 1, 1);
-        return diffuseLight;
+        Color diffuseColor = Utilities.multiplyToColor(scalar, lightIntensity);
+        return diffuseColor;
     }
 
     private Color calcSpecularColor(Geometry geometry, Point3d point, LightSource curLight) {
@@ -159,14 +153,14 @@ public class Renderer {
 
     private Color calcSpecularComp(double Ks, Vector cameraRay, Vector normal, Vector L, int nShininess, Color lightIntensity) {
         //IL.scalarMultiply(Ks * vector.dotProduct(normal));
-        Vector R = L.subtract(normal.scalarMultiply(2 * L.dotProduct(normal)));
 
-        int redValue = (int)(Ks * Math.pow(cameraRay.dotProduct(R), nShininess) * lightIntensity.getRed());
-        int greenValue = (int)(Ks * Math.pow(cameraRay.dotProduct(R), nShininess) * lightIntensity.getGreen());
-        int blueValue = (int)(Ks * Math.pow(cameraRay.dotProduct(R), nShininess) * lightIntensity.getBlue());
+        double rScalar = 2 * L.dotProduct(normal);
+        Vector R = L.subtract(normal.scalarMultiply(rScalar));
 
-        Color specularLight = new Color(Light.clamp(redValue), Light.clamp(greenValue), Light.clamp(blueValue));
-        return  specularLight;
+        double scalar = Math.abs(Ks * Math.pow(cameraRay.dotProduct(R), nShininess));
+
+        Color specularColor = Utilities.multiplyToColor(scalar, lightIntensity);
+        return  specularColor;
     }
 
     private Color calcReflectionColor(Geometry geometry, Point3d point, Ray inRay, int level){
@@ -179,7 +173,7 @@ public class Renderer {
             Point3d reflectedPoint = (Point3d)reflectedEntry.values().toArray()[0];
             Color reflectedColor = calcColor(reflectedGeometry, reflectedPoint,reﬂectedRay, level + 1);
             double Kr = geometry.getMaterial().getKr();
-            return multiplyToColor(Kr, reflectedColor);
+            return Utilities.multiplyToColor(Kr, reflectedColor);
         }
 
         return new Color(0, 0, 0);
@@ -201,7 +195,7 @@ public class Renderer {
             Point3d refractedPoint = (Point3d) refractedEntry.values().toArray()[0];
             Color refractedColor = calcColor(refractedGeometry, refractedPoint, refractedRay, level + 1);
             double Kt = geometry.getMaterial().getKt();
-            return multiplyToColor(Kt, refractedColor);
+            return Utilities.multiplyToColor(Kt, refractedColor);
         }
 
         return new Color(0, 0, 0);
@@ -219,10 +213,10 @@ public class Renderer {
 
         Point3d geometryPoint = new Point3d(point);
 
-//        Vector epsVector = new Vector(geometry.getNormal(point));
-//        epsVector = epsVector.scalarMultiply(2.0);
-//        geometryPoint = geometryPoint.add(epsVector);
-//        geometryPoint = new Point3d(point).add(lightDirection.scalarMultiply( 0.000001 * ((geometry.getNormal(point).dotProduct(lightDirection) > 0) ? 1.0 : -1.0)));
+        //Vector epsVector = new Vector(geometry.getNormal(point));
+        //epsVector = epsVector.scalarMultiply(2.0);
+        //geometryPoint = geometryPoint.add(epsVector);
+        //geometryPoint = new Point3d(point).add(lightDirection.scalarMultiply( 0.000001 * ((geometry.getNormal(point).dotProduct(lightDirection) > 0) ? 1.0 : -1.0)));
 
 
         Ray lightRay = new Ray(geometryPoint.add(lightDirection.scalarMultiply(0.0000001)), lightDirection);
@@ -298,38 +292,5 @@ public class Renderer {
         }
 
         return totalSceneIntersections;
-    }
-
-    private Color addColors(Color color1, Color color2) {
-        int redValue = color1.getRed() + color2.getRed();
-        int greenValue = color1.getGreen() + color2.getGreen();
-        int blueValue = color1.getBlue() + color2.getBlue();
-
-        Color newColor = new Color(Light.clamp(redValue), Light.clamp(greenValue), Light.clamp(blueValue));
-
-        return newColor;
-    }
-
-    private Color addColors(List<Color> colors) {
-        //int i = 0;
-        Color newColor = new Color(0, 0, 0);
-        //while (!colors.isEmpty()) {
-        //    newColor = addColors(newColor, colors.get(i));
-        //    i++;
-        //}
-        for (Color col : colors) {
-            newColor = addColors(newColor, col);
-        }
-        return newColor;
-    }
-
-    private Color multiplyToColor(double K, Color color) {
-        int redValue = (int)K * color.getRed();
-        int greenValue = (int)K * color.getGreen();
-        int blueValue = (int)K * color.getBlue();
-
-        Color newColor = new Color (Light.clamp(redValue), Light.clamp(greenValue), Light.clamp(blueValue));
-
-        return newColor;
     }
 }

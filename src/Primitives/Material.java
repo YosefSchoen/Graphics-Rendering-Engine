@@ -2,10 +2,10 @@ package Primitives;
 
 public class Material {
     public Material() {
-        this.Kd = 0.01;
-        this.Ks = 0.01;
-        this.Kr = 0.01;
-        this.Kt = 0.01;
+        this.Kd = 0.1;
+        this.Ks = 0.1;
+        this.Kr = 0.1;
+        this.Kt = 0.1;
         this.nShininess = 1;
     }
 
