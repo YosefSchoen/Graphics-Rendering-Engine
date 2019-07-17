@@ -33,7 +33,7 @@ public class PointLight extends Light implements LightSource {
     }
 
 
-    public Color getIntesity(Point3d point) {
+    /*public Color getIntesity(Point3d point) {
         double distance = position.distance(point);
         double factor = (Kc + Kl*distance + Kq *distance*distance);
 
@@ -42,7 +42,7 @@ public class PointLight extends Light implements LightSource {
         int blue = this.color.getBlue();
 
         return new Color(clamp((int)(red / factor)), clamp((int)(green / factor)), clamp((int)(blue / factor)));
-    }
+    }*/
 
 
     public Point3d getPosition() {
@@ -62,12 +62,15 @@ public class PointLight extends Light implements LightSource {
     }
 
     public Vector getL(Point3d point) {
-        return new Vector(position.subtract(point));
+        Vector L = new Vector(position.subtract(point));
+        return L;
+        //return new Vector(point.subtract(position).normalize());
     }
 
     public Color getIntensity(Point3d P) {
         //double scalar = Kc + (Kl * position.distance(P)) + (Kq * Math.pow(position.distance(P), 2));
-        double scalar = Kc + Math.pow(Kl, position.distance(P)) + Math.pow(Kq, Math.pow(position.distance(P), 2));
+        double distance = position.distance(P);
+        double scalar = Kc + Math.pow(Kl, distance) + Math.pow(Kq, Math.pow(distance, 2));
 
         Color newColor = Utilities.multiplyToColor(scalar, color);
 

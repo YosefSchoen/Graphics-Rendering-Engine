@@ -138,7 +138,7 @@ public class Shlav8Tester {
         scene.setAmbientLight(ambientLight);
 
 		Color colorSL = new Color(255, 100, 100);
-		Point3d pointSL = new Point3d(-200, -200, -100);
+		Point3d pointSL = new Point3d(-200, -200, -150);
 		Vector vectorSL =  new Vector(2, 2, -3);
 		SpotLight spotLight = new SpotLight(colorSL, pointSL, 0.1, 0.1, 0.1, vectorSL);
 		scene.addLight(spotLight);
@@ -154,7 +154,7 @@ public class Shlav8Tester {
 	public void spotLightTest2(){
 		Scene scene = new Scene();
 		scene.setScreenDistance(200);
-        scene.setBackground(new Color(0, 0, 0));
+        scene.setBackground(new Color(60, 60, 60));
 
 		double radius = 500;
 		Point3d center = new Point3d(0,0,-1000);
