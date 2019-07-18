@@ -1,6 +1,7 @@
 package Renderer;
 
 import Elements.LightSource;
+import Geometries.FlatGeometry;
 import Primitives.Point3d;
 import Primitives.Vector;
 import Primitives.Ray;
@@ -16,6 +17,7 @@ public class Renderer {
     private Scene scene;
     private ImageWriter imageWriter;
     private static final int RECURSION_LEVEL = 4;
+    private static double eps = 0.000001;
 
     public Renderer() {
         this.scene = new Scene();
@@ -111,9 +113,9 @@ public class Renderer {
         colors.add(ambientLight);
         colors.add(emissionLight);
         colors.add(diffuseLight);
-        //colors.add(specularLight);
-        //colors.add(reflectedLight);
-        //colors.add(refractedLight);
+        colors.add(specularLight);
+        colors.add(reflectedLight);
+        colors.add(refractedLight);
 
         Color IO = Utilities.addColors(colors);
 
@@ -140,24 +142,28 @@ public class Renderer {
     }
 
     private Color calcSpecularColor(Geometry geometry, Point3d point, LightSource curLight) {
-        Vector cameraRay = new Vector(scene.getCamera().getP0());
+        Vector cameraVector = new Vector((scene.getCamera().getP0()).subtract(point));
         double Ks = geometry.getMaterial().getKs();
         Vector N = geometry.getNormal(point);
         Vector L = curLight.getL(point);
         int shininess = geometry.getMaterial().getNShininess();
         Color intensity = curLight.getIntensity(point);
 
-        Color specularColor = calcSpecularComp(Ks, cameraRay, N, L, shininess, intensity);
+        Color specularColor = calcSpecularComp(Ks, cameraVector, N, L, shininess, intensity);
         return specularColor;
     }
 
-    private Color calcSpecularComp(double Ks, Vector cameraRay, Vector normal, Vector L, int nShininess, Color lightIntensity) {
+    private Color calcSpecularComp(double Ks, Vector cameraVector, Vector normal, Vector L, int nShininess, Color lightIntensity) {
         //IL.scalarMultiply(Ks * vector.dotProduct(normal));
 
         double rScalar = 2 * L.dotProduct(normal);
         Vector R = L.subtract(normal.scalarMultiply(rScalar));
 
-        double scalar = Math.abs(Ks * Math.pow(cameraRay.dotProduct(R), nShininess));
+        cameraVector = cameraVector.normalize();
+        R = R.normalize();
+
+
+        double scalar = Math.abs(Ks * Math.pow(cameraVector.dotProduct(R), nShininess));
 
         Color specularColor = Utilities.multiplyToColor(scalar, lightIntensity);
         return  specularColor;
@@ -173,14 +179,20 @@ public class Renderer {
             Point3d reflectedPoint = (Point3d)reflectedEntry.values().toArray()[0];
             Color reflectedColor = calcColor(reflectedGeometry, reflectedPoint,reﬂectedRay, level + 1);
             double Kr = geometry.getMaterial().getKr();
-            return Utilities.multiplyToColor(Kr, reflectedColor);
+            reflectedColor = Utilities.multiplyToColor(Kr, reflectedColor);
+            return reflectedColor;
         }
 
         return new Color(0, 0, 0);
     }
 
     private Ray constructReflectedRay(Vector normal, Point3d point, Ray inRay) {
-        Vector direction = inRay.getDirection().subtract(normal.scalarMultiply(2 * inRay.getDirection().dotProduct(normal)));
+        Vector inVector = inRay.getDirection();
+
+        double directionScalar = 2 * inVector.dotProduct(normal);
+        Vector direction = inVector.subtract(normal.scalarMultiply(directionScalar));
+
+        point = point.add(direction.scalarMultiply(eps));
         Ray R = new Ray(point, direction);
         return R;
     }
@@ -202,30 +214,33 @@ public class Renderer {
     }
 
     private Ray constructRefractedRay(Vector normal, Point3d point, Ray inRay) {
-        Ray R = new Ray(point, inRay.getDirection());
+        Vector inVector = inRay.getDirection();
+
+        point = point.add(inVector.scalarMultiply(eps));
+        Ray R = new Ray(point, inVector);
 
         return R;
     }
 
     private boolean notOccluded(LightSource light, Point3d point, Geometry geometry) {
         Vector lightDirection = light.getL(point);
-        lightDirection = lightDirection.scalarMultiply(-1.0).normalize();
+        lightDirection = lightDirection.scalarMultiply(-1.0);
 
         Point3d geometryPoint = new Point3d(point);
 
-        //Vector epsVector = new Vector(geometry.getNormal(point));
-        //epsVector = epsVector.scalarMultiply(2.0);
-        //geometryPoint = geometryPoint.add(epsVector);
+        Vector epsVector = new Vector(geometry.getNormal(point));
+        epsVector = epsVector.scalarMultiply(2.0);
+        geometryPoint = geometryPoint.add(epsVector);
         //geometryPoint = new Point3d(point).add(lightDirection.scalarMultiply( 0.000001 * ((geometry.getNormal(point).dotProduct(lightDirection) > 0) ? 1.0 : -1.0)));
 
 
-        Ray lightRay = new Ray(geometryPoint.add(lightDirection.scalarMultiply(0.0000001)), lightDirection);
+        Ray lightRay = new Ray(geometryPoint.add(lightDirection.scalarMultiply(eps)), lightDirection);
 
         Map<Geometry, List<Point3d>> intersectionPoints = getSceneRayIntersections(lightRay);
 
-        //if(geometry instanceof FlatGeometry) {
-        //    intersectionPoints.remove(geometry);
-        //}
+        if(geometry instanceof FlatGeometry) {
+            intersectionPoints.remove(geometry);
+        }
 
         for (Map.Entry<Geometry, List<Point3d>> entry: intersectionPoints.entrySet()) {
             if (entry.getKey().getMaterial().getKt() != 0) {

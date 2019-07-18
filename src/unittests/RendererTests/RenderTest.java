@@ -175,9 +175,9 @@ public class RenderTest {
         scene.setBackground(new Color(60, 60, 60));
         scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.2));
         Sphere sphere = new Sphere(50, new Point3d(0, 0, -150));
-        sphere.setMaterial(new Material(0.5, 0.5, 0.5, 0.5, 5));
+        sphere.setMaterial(new Material(0.05, 0.05, 0.05, 0.05, 5));
         sphere.setEmission(new Color(0, 0, 0));
-        PointLight pointLight = new PointLight(new Color(0, 255, 0), new Point3d(0, 0, -90), 2, 0.001, 0.01);
+        PointLight pointLight = new PointLight(new Color(0, 255, 0), new Point3d(0, 0, -90), 0.1, 0.001, 0.01);
         scene.addGeometry(sphere);
         scene.addLight(pointLight);
         ImageWriter imageWriter = new ImageWriter("coolscene", 500, 500, 500, 500);

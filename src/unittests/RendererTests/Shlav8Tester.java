@@ -184,16 +184,18 @@ public class Shlav8Tester {
         Color amColor = new Color(150, 50, 50);
         AmbientLight ambientLight = new AmbientLight(amColor, 0.5);
         scene.setAmbientLight(ambientLight);
-	
+
 		scene.addLight(new SpotLight(new Color(255, 100, 100), new Point3d(-200, -200, -150), 0.1, 0.1, 0.1,   new Vector(2, 2, -3)));
-	
+
 		ImageWriter imageWriter = new ImageWriter("Spot Test2", 500, 500, 500, 500);
-		
+
 		Renderer render = new Renderer(scene, imageWriter);
-		
+
+
+
 		render.renderImage();
-		render.printGrid(50);
-		imageWriter.writeToimage();
+		//render.printGrid(50);
+		//imageWriter.writeToimage();
 	}
 
 	@Test

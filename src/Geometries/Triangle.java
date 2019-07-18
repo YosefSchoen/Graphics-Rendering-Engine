@@ -11,10 +11,10 @@ import java.util.List;
 
 
 //Triangle class
-public class Triangle extends Geometry implements FlatGeometry{
+public class Triangle extends Polygon implements FlatGeometry{
     //empty constructor
     public Triangle() {
-        super();
+        super(3);
         this.p1 = new Point3d();
         this.p2 = new Point3d();
         this.p3 = new Point3d();
@@ -22,6 +22,7 @@ public class Triangle extends Geometry implements FlatGeometry{
 
     //constructor
     public Triangle(Point3d p1, Point3d p2, Point3d p3) {
+        super(3);
         this.p1 = p1;
         this.p2 = p2;
         this.p3 = p3;
@@ -29,7 +30,7 @@ public class Triangle extends Geometry implements FlatGeometry{
 
     //alternative constructor
     public Triangle(Point3d p1, Point3d p2, Point3d p3,Material material, Color color) {
-        super(material, color);
+        super(3, material, color);
         this.p1 = p1;
         this.p2 = p2;
         this.p3 = p3;
@@ -174,7 +175,6 @@ public class Triangle extends Geometry implements FlatGeometry{
     private Point3d p1;
     private Point3d p2;
     private Point3d p3;
-
 }
 
 
