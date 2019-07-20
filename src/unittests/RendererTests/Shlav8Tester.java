@@ -43,8 +43,8 @@ public class Shlav8Tester {
         AmbientLight ambientLight = new AmbientLight(amColor, 0.5);
         scene.setAmbientLight(ambientLight);
 
-		Color colorPL = new Color(150, 150, 255);
-		Point3d pointPL = new Point3d(-200, -200, -500);
+		Color colorPL = new Color(255, 150, 255);
+		Point3d pointPL = new Point3d(-200, -200, -150);
 		PointLight pointLight = new PointLight(colorPL, pointPL, 0.1, 0.1, 0.1);
 		scene.addLight(pointLight);
 
@@ -53,6 +53,8 @@ public class Shlav8Tester {
 		Renderer render = new Renderer(scene, imageWriter);
 		
 		render.renderImage();
+        //render.printGrid(50);
+        //imageWriter.writeToimage();
 	}
 
 
@@ -108,8 +110,8 @@ public class Shlav8Tester {
 		Renderer render = new Renderer(scene, imageWriter);
 		
 		render.renderImage();
-		//render.printGrid(50);
-		//imageWriter.writeToimage();
+		render.printGrid(50);
+		imageWriter.writeToimage();
 	}
 	
 	
@@ -148,6 +150,8 @@ public class Shlav8Tester {
 		Renderer render = new Renderer(scene, imageWriter);
 		
 		render.renderImage();
+        //render.printGrid(50);
+        //imageWriter.writeToimage();
 	}
 	
 	@Test
@@ -229,7 +233,7 @@ public class Shlav8Tester {
 		Renderer render = new Renderer(scene, imageWriter);
 		
 		render.renderImage();
-	//	render.printGrid(50);
+	    render.printGrid(50);
 		imageWriter.writeToimage();
 		
 	}

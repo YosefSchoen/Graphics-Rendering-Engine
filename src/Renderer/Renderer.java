@@ -17,7 +17,8 @@ public class Renderer {
     private Scene scene;
     private ImageWriter imageWriter;
     private static final int RECURSION_LEVEL = 4;
-    private static double eps = 0.000001;
+    private static final double eps = 0.000001;
+    private static  final int MAX_RAYS = 4;
 
     public Renderer() {
         this.scene = new Scene();
@@ -54,22 +55,37 @@ public class Renderer {
         //need to render through every pixel in the scene
         for (int i = 0; i < imageWriter.getNx(); i++) {
             for (int j = 0; j < imageWriter.getNy(); j++) {
+                List<Color> raysColors = new ArrayList<>();
 
-                // ray will be made starting from the camera to each pixel on the scene
-                Ray ray = scene.getCamera().constructRayThroughPixel(imageWriter.getNx(), imageWriter.getNy(), i,j, scene.getScreenDistance(), imageWriter.getWidth(), imageWriter.getHeight());
+                for (int k = (-1 * MAX_RAYS) / 2; k <= MAX_RAYS / 2; k++) {
+                    // ray will be made starting from the camera to each pixel on the scene
+                    double iOffSet = (k + (imageWriter.getWidth() / imageWriter.getNx()) / MAX_RAYS);
+                    double jOffSet = (k + (imageWriter.getHeight() / imageWriter.getNy()) / MAX_RAYS);
 
-                //making a map from each geometry to its list of intersection points
-                Map<Geometry, List<Point3d>> intersectionPoints = getSceneRayIntersections(ray);
-                if (intersectionPoints.isEmpty()) {
-                    imageWriter.writePixel(i, j, this.scene.getBackground());
-                }
 
-                else {
-                    Map<Geometry, Point3d> closestPoint = getClosestPoint(intersectionPoints);
-                    Geometry geometry = (Geometry)closestPoint.keySet().toArray()[0];
-                    Point3d point = (Point3d)closestPoint.values().toArray()[0];
 
-                    this.imageWriter.writePixel(i, j, calcColor(geometry, point, ray));
+                    Ray ray = scene.getCamera().constructRayThroughPixel(imageWriter.getNx(), imageWriter.getNy(), i + iOffSet, j + jOffSet, scene.getScreenDistance(), imageWriter.getWidth(), imageWriter.getHeight());
+
+                    //making a map from each geometry to its list of intersection points
+                    Map<Geometry, List<Point3d>> intersectionPoints = getSceneRayIntersections(ray);
+
+                    if (intersectionPoints.isEmpty()) {
+                        Color rayColor = this.scene.getBackground();
+                        raysColors.add(rayColor);
+
+                    }
+
+                    else {
+                        Map<Geometry, Point3d> closestPoint = getClosestPoint(intersectionPoints);
+                        Geometry geometry = (Geometry) closestPoint.keySet().toArray()[0];
+                        Point3d point = (Point3d) closestPoint.values().toArray()[0];
+
+                        Color rayColor = calcColor(geometry, point, ray);
+                        raysColors.add(rayColor);
+                    }
+
+                    Color avgRayColors = Utilities.averageColor(raysColors);
+                    this.imageWriter.writePixel(i, j, avgRayColors);
                 }
             }
         }
@@ -78,7 +94,14 @@ public class Renderer {
     }
 
     public void printGrid(int n) {
-        return;
+        Color color = new Color(255, 255, 255);
+        for(int i = 0; i < imageWriter.getNx(); i++) {
+            for(int j = 0; j < imageWriter.getNy(); j++) {
+                if (i % n == 0 || j % n == 0) {
+                    imageWriter.writePixel(i, j, color);
+                }
+            }
+        }
     }
 
     private Color calcColor(Geometry geometry, Point3d point, Ray inRay) {
@@ -134,7 +157,6 @@ public class Renderer {
 
     private Color calcDiffusiveComp(double Kd, Vector normal, Vector L, Color lightIntensity){
         //IL.scalarMultiply(Kd * normal.dotProduct(lightIntensity));
-        //L = L.normalize();
         double scalar = Math.abs(Kd * normal.dotProduct(L));
 
         Color diffuseColor = Utilities.multiplyToColor(scalar, lightIntensity);
@@ -161,7 +183,6 @@ public class Renderer {
 
         cameraVector = cameraVector.normalize();
         R = R.normalize();
-
 
         double scalar = Math.abs(Ks * Math.pow(cameraVector.dotProduct(R), nShininess));
 
@@ -289,23 +310,19 @@ public class Renderer {
         return intersectionPoints;
     }
 
-    private Map<Geometry, List<Point3d>> getSceneRayIntersections2(Ray r) {
-        //Gets an iterator so we can look at all the geometries in a scene
-        Iterator<Geometry> geometriesIterator = scene.getGeometriesIterator();
-        //Initializes a HashMap to hold all the points of intersection and the geometries with which they're associated
-        Map<Geometry, List<Point3d>> totalSceneIntersections = new HashMap<Geometry, List<Point3d>>();
-
-        //Loops over all the geometries and for each...
-        while(geometriesIterator.hasNext()) {
-            Geometry geometry = geometriesIterator.next();
-            //Finds the points of intersection with the given ray
-            List<Point3d> geometrysIntersectionList = geometry.findIntersections(r);
-            //And adds then to the master list if it's empty
-            if(!geometrysIntersectionList.isEmpty()) {
-                totalSceneIntersections.put(geometry, geometrysIntersectionList);
+    private Map<Geometry, List<Point3d>> getSceneRayIntersectionsImproved(Ray ray) {
+        Iterator<Geometry> geometries = scene.getGeometriesIterator();
+        Map<Geometry, List<Point3d>> intersectionPoints = new HashMap<Geometry, List<Point3d>>();
+        while (geometries.hasNext()) {
+            Geometry geometry = geometries.next();
+            List<Point3d> geometryIntersectionPoints = geometry.findIntersections(ray);
+            if (!geometryIntersectionPoints.isEmpty()) {
+                intersectionPoints.put(geometry, geometryIntersectionPoints);
             }
         }
 
-        return totalSceneIntersections;
+        return intersectionPoints;
     }
+
+    private Ray getRaysThroughPixel(){return null;}
 }

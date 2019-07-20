@@ -38,4 +38,24 @@ public class Utilities {
 
         return newColor;
     }
+
+    static public Color averageColor(List<Color> colors) {
+        int avgRed = 0;
+        int avgGreen = 0;
+        int avgBlue = 0;
+
+
+        for(int i = 0; i < colors.size(); i++) {
+            avgRed = avgRed + colors.get(i).getRed();
+            avgGreen = avgGreen + colors.get(i).getGreen();
+            avgBlue = avgBlue + colors.get(i).getBlue();
+        }
+
+        avgRed = avgRed / (colors.size());
+        avgGreen = avgGreen / (colors.size());
+        avgBlue = avgBlue / (colors.size());
+
+        Color avgColor = new Color(avgRed, avgGreen, avgBlue);
+        return  avgColor;
+    }
 }

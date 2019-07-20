@@ -113,11 +113,11 @@ public class RenderTest {
         Camera c = new Camera(new Point3d(), new Vector(0, -1, 0), new Vector(0, 0, -1));
 
         Sphere sphere = new Sphere(25, new Point3d(0, 0, -50));
-        sphere.setEmission(new Color(0, 255, 0));
-        Triangle t1 = new Triangle(new Point3d(100, 0, -49), new Point3d(0, 100, -49), new Point3d(100, 100, -49), new Material(), new Color(0, 0, 255));
-        Triangle t2 = new Triangle(new Point3d(-100, 0, -49), new Point3d(0, 100, -49), new Point3d(-100, 100, -49), new Material(), new Color(0, 255, 255));
-        Triangle t3 = new Triangle(new Point3d(100, 0, -49), new Point3d(0, -100, -49), new Point3d(100, -100, -49), new Material(), new Color(255, 0, 255));
-        Triangle t4 = new Triangle(new Point3d(-100, 0, -49), new Point3d(0, -100, -49), new Point3d(-100, -100, -49), new Material(), new Color(255, 255, 0));
+        sphere.setEmission(new Color(100, 0, 0));
+        Triangle t1 = new Triangle(new Point3d(100, 0, -49), new Point3d(0, 100, -49), new Point3d(100, 100, -49), new Material(), new Color(0, 0, 100));
+        Triangle t2 = new Triangle(new Point3d(-100, 0, -49), new Point3d(0, 100, -49), new Point3d(-100, 100, -49), new Material(), new Color(0, 100, 100));
+        Triangle t3 = new Triangle(new Point3d(100, 0, -49), new Point3d(0, -100, -49), new Point3d(100, -100, -49), new Material(), new Color(100, 0, 100));
+        Triangle t4 = new Triangle(new Point3d(-100, 0, -49), new Point3d(0, -100, -49), new Point3d(-100, -100, -49), new Material(), new Color(100, 100, 0));
 
         AmbientLight am = new AmbientLight(new Color(100, 100, 100), 0.2);
 
@@ -128,7 +128,7 @@ public class RenderTest {
         geometrieslist.add(t3);
         geometrieslist.add(t4);
 
-        PointLight pl = new PointLight(new Color(255, 255, 255), new Point3d(50, 50, -60), 0.5, 0.5, 0.5);
+        PointLight pl = new PointLight(new Color(255, 50, 150), new Point3d(50, 50, -60), 0.5, 0.5, 0.5);
 
         List<LightSource> lightlist = new ArrayList<>();
         lightlist.add(pl);
@@ -170,19 +170,46 @@ public class RenderTest {
     @Test
     public void dovidAndYoTest() {
         Scene scene = new Scene();
-        scene.setSceneName("The coolest scene");
         scene.setScreenDistance(100);
         scene.setBackground(new Color(60, 60, 60));
-        scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.2));
-        Sphere sphere = new Sphere(50, new Point3d(0, 0, -150));
-        sphere.setMaterial(new Material(0.05, 0.05, 0.05, 0.05, 5));
-        sphere.setEmission(new Color(0, 0, 0));
-        PointLight pointLight = new PointLight(new Color(0, 255, 0), new Point3d(0, 0, -90), 0.1, 0.001, 0.01);
-        scene.addGeometry(sphere);
+
+        Color emissions1 = new Color(20, 20, 100);
+        Material m1 = new Material(0.1, 0.1, 0.1, 0.1, 4);
+        Point3d center1 = new Point3d(3, 4, -500);
+
+        Sphere sphere1 = new Sphere(300, center1);
+        sphere1.setEmission(emissions1);
+        sphere1.setMaterial(m1);
+
+        Color emissions2 = new Color(80, 80, 200);
+        Material m2 = new Material(0.1, 0.1, 0.1, 0.1, 4);
+        Point3d center2 = new Point3d(200, 4, -200);
+
+        Sphere sphere2 = new Sphere(50, center2);
+        sphere2.setEmission(emissions2);
+        sphere2.setMaterial(m2);
+
+        scene.addGeometry(sphere1);
+        scene.addGeometry(sphere2);
+
+        AmbientLight ambientLight = new AmbientLight(new Color(150, 150, 150), 0.1);
+
+        Color PLColor = new Color(150, 150, 150);
+        Point3d PLPosition = new Point3d(30, 20, -200);
+        PointLight pointLight = new PointLight(PLColor, PLPosition, 0.1, 0.1, 0.1);
+
+        Color SLColor = new Color(150, 150, 150);
+        Point3d SLPosition = new Point3d(80, 20, -130);
+        Vector SLDirection = new Vector(-2, 3, -1);
+        SpotLight spotLight = new SpotLight(SLColor, SLPosition, 0.1, 0.1, 0.1, SLDirection);
+
+        scene.setBackground(new Color(60, 60, 60));
+        scene.setAmbientLight(ambientLight);
         scene.addLight(pointLight);
-        ImageWriter imageWriter = new ImageWriter("coolscene", 500, 500, 500, 500);
-        Renderer renderer = new Renderer(scene, imageWriter);
-        renderer.renderImage();
-        //imageWriter.writeToimage();
+        scene.addLight(spotLight);
+
+        ImageWriter imageWriter = new ImageWriter("MyTest", 500, 500, 500, 500);
+        Renderer render = new Renderer(scene, imageWriter);
+        render.renderImage();
     }
 }

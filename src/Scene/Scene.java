@@ -11,7 +11,7 @@ import java.util.*;
 public class Scene {
     public Scene() {
         this.sceneName = "";
-        this.background = new Color(255, 255, 255);
+        this.background = new Color(60, 60, 60);
         this.ambientLight = new AmbientLight();
         this.lights = new ArrayList<>();
         this.geometries = new ArrayList<>();

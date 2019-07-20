@@ -30,7 +30,6 @@ public class SpotLight extends PointLight{
         scalar = scalar * direction.dotProduct(getL(P));
         //Vector L = new Vector(getPosition());
         //Vector L = getL(P);
-        //direction = direction.normalize();
 
         Color newColor = Utilities.multiplyToColor(scalar, color);
 
