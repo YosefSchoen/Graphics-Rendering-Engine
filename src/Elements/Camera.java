@@ -4,7 +4,7 @@ import Primitives.Point3d;
 import Primitives.Vector;
 import Primitives.Ray;
 
-//the camera will shoot rays and see where they intersect on the various geometries, it will color the pixel of the intersection points black
+//the camera will shoot rays and see where they intersect on the various geometries
 public class Camera {
 
     //empty constructor

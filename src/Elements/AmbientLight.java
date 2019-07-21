@@ -5,7 +5,11 @@ import Utilities.Utilities;
 
 import java.awt.*;
 
+
+//ambient light is a type of light that brightens up the scene by a single color
 public class AmbientLight extends Light {
+
+    //empty constructor
     public AmbientLight() {
         super();
         this.Ka = 1;
@@ -16,6 +20,8 @@ public class AmbientLight extends Light {
      * @param color The lights color
      * @param Ka the lights intensity
      */
+
+    //constructor
     public AmbientLight(Color color, double Ka){
         super(color);
         this.Ka = clamp(Ka);
@@ -25,6 +31,8 @@ public class AmbientLight extends Light {
      * Ambient light copy constructor
      * @param other an AmbientLight to copy
      */
+
+    //copy constructor
     public AmbientLight(AmbientLight other) {
         super(other);
         this.Ka = other.Ka;
@@ -56,6 +64,6 @@ public class AmbientLight extends Light {
     }
 
 
-
+    //Ka is a scalar that ranges between 0 and 1 (nothing to complete brightness)
     private double Ka;
 }

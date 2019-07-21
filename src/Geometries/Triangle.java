@@ -38,12 +38,10 @@ public class Triangle extends Polygon implements FlatGeometry{
 
     //copy constructor
     public Triangle(Triangle other) {
+        super(other);
         this.p1 = other.p1;
         this.p2 = other.p2;
         this.p3 = other.p3;
-
-        this.setMaterial(other.getMaterial());
-        this.setEmission(other.getEmission());
     }
 
     //getters
@@ -86,47 +84,6 @@ public class Triangle extends Polygon implements FlatGeometry{
 
     //method to find the intersection points of a Ray and a Triangle
     public List<Point3d> findIntersections(Ray P) {
-        /*
-        //the Points will be stored in a List
-        List<Point3d> intersection = new ArrayList<Point3d>();
-
-        //N is the perpendicular vector to the triangle and its plane
-        Vector N = getNormal(P.getP0());
-
-        //the plane the triangle is embedded in is any point of the triangle and its normal
-        Plane trianglesPlane = new Plane(this.p1, N);
-
-        //V1, V2, V3 are vectors from the vertices of the triangle to the ray
-        Vector V1 = new Vector(P.getP0().subtract(this.p1));
-        Vector V2 = new Vector(P.getP0().subtract(this.p2));
-        Vector V3 = new Vector(P.getP0().subtract(this.p3));
-
-        //normals of V1, V2, V3
-        Vector N1 = new Vector(V1.crossProduct(V2));
-        N1.normalize();
-
-        Vector N2 = new Vector(V2.crossProduct(V3));
-        N2.normalize();
-
-        Vector N3 = new Vector(V3.crossProduct(V1));
-        N3.normalize();
-
-        double sign1 = N1.dotProduct(this.p1.subtract(P.getP0()));
-        double sign2 = N2.dotProduct(this.p2.subtract(P.getP0()));
-        double sign3 = N3.dotProduct(this.p3.subtract(P.getP0()));
-        //System.out.println("" + sign1 + " " + sign2 + " " + sign3 + " \t " + N1.length() + " " + N2.length() + " " + N3.length());
-
-        if (sign1 < 0 && sign2 < 0 && sign3 < 0) {
-            intersection = trianglesPlane.findIntersections(P);
-        }
-
-        else if(sign1 > 0 && sign2 > 0 && sign3 > 0) {
-            intersection = trianglesPlane.findIntersections(P);
-        }
-
-        return intersection;
-        */
-
         //Initializes an empty list that will contain the point(s) of intersection, if any
         List<Point3d> listToReturn = new ArrayList<>();
 

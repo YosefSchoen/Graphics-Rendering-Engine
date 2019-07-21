@@ -9,7 +9,8 @@ import java.awt.*;
 import java.util.List;
 
 //Cylinder class
-public class Cylinder extends RadialGeometry{
+public class Cylinder extends RadialGeometry {
+
     //empty constructor
     Cylinder() {
         super();
@@ -48,6 +49,7 @@ public class Cylinder extends RadialGeometry{
     //ray which the cylinder rotates around
     private Ray axisRay;
 
+    //not implemented in this project
     public List<Point3d> findIntersections(Ray P) {
         return null;
     }

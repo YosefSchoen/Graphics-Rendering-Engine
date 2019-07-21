@@ -3,19 +3,21 @@ package Elements;
 import Primitives.Point3d;
 import java.awt.Color;
 
+//an abstract light class in which all lights inherit
 public abstract class Light {
-    protected Color color;
-
+    //empty constructor
     public Light() {
-        // Create a new color for the light, default white
+        // Create a new color for the light, default black
         color = new Color(0, 0, 0);
     }
 
+    //constructor
     public Light(int r, int g, int b) {
         // Use the passed color
         this.color = new Color(r, g, b);
     }
 
+    //Copy constructor
     public Light(Color color) {
         // Use the passed color
         this.color = color;
@@ -69,4 +71,7 @@ public abstract class Light {
 
         return val;
     }
+
+    //all lights have a color
+    protected Color color;
 }

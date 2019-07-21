@@ -7,7 +7,10 @@ import Utilities.Utilities;
 import java.awt.*;
 
 
+//a type of light that has a position and radiates equally around it with attenuation
 public class PointLight extends Light implements LightSource {
+
+    //empty constructor
     public PointLight() {
         super();
         this.position = new Point3d();
@@ -16,6 +19,7 @@ public class PointLight extends Light implements LightSource {
         this.Kq = 0.5;
     }
 
+    //constructor
     public PointLight(Color color, Point3d position, double Kc, double Kl, double Kq) {
         super(color);
         this.position = position;
@@ -24,6 +28,7 @@ public class PointLight extends Light implements LightSource {
         this.Kq = clamp(Kq);
     }
 
+    //copy constructor
     public PointLight(PointLight other) {
         super(other);
         this.position = other.position;
@@ -32,19 +37,7 @@ public class PointLight extends Light implements LightSource {
         this. Kq = other.Kq;
     }
 
-
-    /*public Color getIntesity(Point3d point) {
-        double distance = position.distance(point);
-        double factor = (Kc + Kl*distance + Kq *distance*distance);
-
-        int red = this.color.getRed();
-        int green = this.color.getGreen();
-        int blue = this.color.getBlue();
-
-        return new Color(clamp((int)(red / factor)), clamp((int)(green / factor)), clamp((int)(blue / factor)));
-    }*/
-
-
+    //getters
     public Point3d getPosition() {
         return new Point3d(position);
     }
@@ -61,40 +54,48 @@ public class PointLight extends Light implements LightSource {
         return Kq;
     }
 
+    //check this
     public Vector getL(Point3d point) {
         Vector L = new Vector(position.subtract(point));
         return L;
-        //return new Vector(point.subtract(position).normalize());
     }
 
+    //the intensity varies based on distance from the light
     public Color getIntensity(Point3d P) {
-        //double scalar = Kc + (Kl * position.distance(P)) + (Kq * Math.pow(position.distance(P), 2));
+
+        //attenuation factors
         double distance = position.distance(P);
         double scalar = Kc + Math.pow(Kl, distance) + Math.pow(Kq, Math.pow(distance, 2));
 
+        //scale the color by the attenuation factor
         Color newColor = Utilities.multiplyToColor(scalar, color);
 
         return newColor;
     }
 
+
+    //setters
     public void setPosition(Point3d position) {
         this.position = new Point3d(position);
     }
 
     public void setKc(double kc) {
-        Kc = kc;
+        this.Kc = kc;
     }
 
     public void setKl(double kl) {
-        Kl = kl;
+        this.Kl = kl;
     }
 
     public void setKq(double kq) {
-        Kq = kq;
+        this.Kq = kq;
     }
 
 
+    //position of the light
     private Point3d position;
+
+    //attenuation factors K const, K linear, and K quadratic
     private double Kc;
     private double Kl;
     private double Kq;

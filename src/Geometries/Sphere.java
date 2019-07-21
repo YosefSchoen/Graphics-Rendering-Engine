@@ -1,9 +1,12 @@
 package Geometries;
 
+import Primitives.Material;
 import Primitives.Point3d;
 import Primitives.Vector;
 import Primitives.Ray;
+import javafx.geometry.Point3D;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Math;
@@ -24,6 +27,11 @@ public class Sphere extends RadialGeometry {
         this.center = center;
     }
 
+    public Sphere(double radius, Point3d center, Material material, Color color) {
+        super(radius, material, color);
+        this.center = center;
+    }
+
     //copy constructor
     public Sphere(Sphere other) {
         super(other);
@@ -37,7 +45,6 @@ public class Sphere extends RadialGeometry {
 
     public Vector getNormal(Point3d P) {
         Vector N = P.subtract(this.center);
-        //N.normalize();
         return new Vector(N.normalize());
     }
 
@@ -47,6 +54,7 @@ public class Sphere extends RadialGeometry {
     }
 
 
+    //finds the intersection of a sphere and a ray
     public List<Point3d> findIntersections(Ray P) {
         //creating a list of potential intersection Points to return
         List<Point3d> intersections = new ArrayList<Point3d>();
@@ -81,6 +89,7 @@ public class Sphere extends RadialGeometry {
 
         return intersections;
     }
+
     //center point
     private Point3d center;
 }

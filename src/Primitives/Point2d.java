@@ -15,6 +15,7 @@ public class Point2d {
         this.y = y;
     }
 
+    //alternative constructor
     public Point2d(double xVal, double yVal) {
         this.x = new Coordinate(xVal);
         this.y = new Coordinate(yVal);
@@ -81,10 +82,6 @@ public class Point2d {
         Point2d newPoint2d = new Point2d(this.x.divide(other.x),  this.y.divide(other.y));
         return newPoint2d;
     }
-
-
-
-
 
     //2 coordinates which make a 2d point
     private Coordinate x;

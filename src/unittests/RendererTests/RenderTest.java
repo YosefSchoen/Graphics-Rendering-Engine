@@ -12,6 +12,7 @@ import Primitives.Vector;
 import Renderer.Renderer;
 import Scene.Scene;
 import Renderer.ImageWriter;
+import javafx.geometry.Point3D;
 import org.junit.Test;
 
 import java.awt.Color;
@@ -209,6 +210,35 @@ public class RenderTest {
         scene.addLight(spotLight);
 
         ImageWriter imageWriter = new ImageWriter("MyTest", 500, 500, 500, 500);
+        Renderer render = new Renderer(scene, imageWriter);
+        render.renderImage();
+    }
+
+    @Test
+    public void softShadowTest() {
+        Scene scene = new Scene();
+        scene.setScreenDistance(100);
+        scene.setBackground(new Color(60, 60, 60));
+
+        Point3d p1 = new Point3d(-100, -100, -50);
+        Point3d p2 = new Point3d(100, -100, -50);
+        Point3d p3 = new Point3d(0, 100, -50);
+        Triangle triangle = new Triangle(p1, p2, p3);
+        triangle.setEmission(new Color(0, 0, 100));
+        triangle.setMaterial(new Material(0.1, 0.1, 0.1, 0.1, 6));
+        scene.addGeometry(triangle);
+
+        Color amColor = new Color(50, 50, 50);
+        AmbientLight ambientLight = new AmbientLight(amColor, 0.5);
+        scene.setAmbientLight(ambientLight);
+
+        Color colorSL = new Color(255, 100, 100);
+        Point3d pointSL = new Point3d(-200, -200, -150);
+        Vector vectorSL =  new Vector(2, 2, -3);
+        SpotLight spotLight = new SpotLight(colorSL, pointSL, 0.1, 0.1, 0.1, vectorSL);
+        scene.addLight(spotLight);
+
+        ImageWriter imageWriter = new ImageWriter("softShadowTest", 500, 500, 500, 500);
         Renderer render = new Renderer(scene, imageWriter);
         render.renderImage();
     }
