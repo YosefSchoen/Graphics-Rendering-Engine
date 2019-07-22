@@ -14,8 +14,6 @@ public class Vector {
         this.head = head;
     }
 
-
-
     //i don't know if this is what rendered wants?
     public Vector(double xVal, double yVal, double zVal) {
         head = new Point3d(xVal, yVal, zVal);
@@ -71,6 +69,12 @@ public class Vector {
         Point3d pScalar = new Point3d(Scalar, Scalar, Scalar);
         Vector scaledVector = new Vector(this.head.divide(pScalar));
         return scaledVector;
+    }
+
+    //method to reverse the direction of a vector
+    public Vector reverse() {
+        Vector reversed = scalarMultiply(-1.0);
+        return reversed;
     }
 
     //method to find the the vector which is the cross product of two vectors

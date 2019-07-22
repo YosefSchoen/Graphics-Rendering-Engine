@@ -1,18 +1,16 @@
-package unittests.RendererTests;
+package UnitTests.RendererTests;
 
 import Elements.*;
 import Geometries.Geometry;
 import Geometries.Plane;
 import Geometries.Sphere;
 import Geometries.Triangle;
-import Primitives.Coordinate;
 import Primitives.Material;
 import Primitives.Point3d;
 import Primitives.Vector;
 import Renderer.Renderer;
 import Scene.Scene;
 import Renderer.ImageWriter;
-import javafx.geometry.Point3D;
 import org.junit.Test;
 
 import java.awt.Color;

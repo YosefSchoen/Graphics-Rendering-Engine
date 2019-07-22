@@ -1,16 +1,8 @@
-package unittests.RendererTests;;
+package UnitTests.RendererTests;
 
 import Renderer.ImageWriter;
 
 import java.lang.System;
-
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.*;
-import javax.imageio.stream.*;
 
 
 public class ImageWriterTest {

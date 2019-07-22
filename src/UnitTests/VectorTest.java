@@ -1,4 +1,4 @@
-package unittests;
+package UnitTests;
 
 //These classes are needed to test vectors
 import Primitives.Coordinate;

@@ -1,6 +1,9 @@
 package Primitives;
 
+//material hold the material for the 4 light types in the renderer and the shininess
 public class Material {
+
+    //empty constructor
     public Material() {
         this.Kd = 0.1;
         this.Ks = 0.1;
@@ -9,6 +12,7 @@ public class Material {
         this.nShininess = 1;
     }
 
+    //constructor
     public Material(double Kd, double Ks, double Kr, double Kt, int nShininess) {
         this.Kd = Kd;
         this.Ks = Ks;
@@ -17,6 +21,7 @@ public class Material {
         this.nShininess = nShininess;
     }
 
+    //copy constructor
     public Material(Material other) {
         this.Kd = other.Kd;
         this.Ks = other.Ks;
@@ -25,6 +30,7 @@ public class Material {
         this.nShininess = other.nShininess;
     }
 
+    //getters
     public double getKd() {
         return Kd;
     }
@@ -45,6 +51,7 @@ public class Material {
         return nShininess;
     }
 
+    //setters
     public void setKd(double Kd) {
         this.Kd = Kd;
     }
@@ -65,9 +72,13 @@ public class Material {
         this.nShininess = nShininess;
     }
 
+
+    //values are K diffuse, K specular, K reflective , and K refraction
     private double Kd;
     private double Ks;
     private double Kr;
     private double Kt;
+
+    //object shininess used in specular light calculation
     private int nShininess;
 }

@@ -1,11 +1,3 @@
-/**
- * Note from Yosef B
- * I have absolutely no idea what Nx and Ny are.
- * I'm currently electing to just ignore them.
- *
- * Nx is number of pixels in the x direction
- * Ny is the same but in the y direction
- */
 package Renderer;
 
 import java.awt.Color;

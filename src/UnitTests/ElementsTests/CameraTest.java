@@ -1,10 +1,10 @@
-package ElementsTests;// package unittests;
+package UnitTests.ElementsTests;
 
-import Elements.Camera;
 import Primitives.Coordinate;
 import Primitives.Point3d;
 import Primitives.Ray;
 import Primitives.Vector;
+import Elements.Camera;
 
 import static org.junit.Assert.*;
 import java.lang.System;

@@ -8,7 +8,10 @@ import Elements.Camera;
 import java.awt.Color;
 import java.util.*;
 
+//the scene class will hold all of the lights and geometries in the scene
 public class Scene {
+
+    //empty constructor
     public Scene() {
         this.sceneName = "";
         this.background = new Color(60, 60, 60);
@@ -19,6 +22,7 @@ public class Scene {
         this.screenDistance = 0;
     }
 
+    //constructor
     public Scene(String sceneName, Color background, AmbientLight ambientLight,List<LightSource> lights, List<Geometry> geometries, Camera camera, double screenDistance) {
         this.sceneName = sceneName;
         this.background = background;
@@ -29,6 +33,7 @@ public class Scene {
         this.screenDistance = screenDistance;
     }
 
+    //copy constructor
     public Scene(Scene other) {
         this.sceneName = other.sceneName;
         this.background = other.background;
@@ -39,6 +44,7 @@ public class Scene {
         this.screenDistance = other.screenDistance;
     }
 
+    //getters
     public String getSceneName() {
         return sceneName;
     }
@@ -72,6 +78,7 @@ public class Scene {
     }
 
 
+    //setters
     public void setSceneName(String sceneName) {
         this.sceneName = sceneName;
     }
@@ -96,13 +103,16 @@ public class Scene {
         this.screenDistance = screenDistance;
     }
 
+    //add a geometry to the list geometries
     public void addGeometry(Geometry newGeometry) {
         geometries.add(newGeometry);
     }
 
+    //add a light source to the list lights
     public void  addLight(LightSource newLightSource) {lights.add(newLightSource);}
 
 
+    //every scene has a name, background color, ambient light, list of other light sources, list of geometries, a camera, and screen distance
     private String sceneName;
     private Color background;
     private AmbientLight ambientLight;

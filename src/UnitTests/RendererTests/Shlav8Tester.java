@@ -1,4 +1,4 @@
-package unittests.RendererTests;
+package UnitTests.RendererTests;
 
 
 import Elements.AmbientLight;

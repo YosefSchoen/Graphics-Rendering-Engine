@@ -1,4 +1,4 @@
-package GeometriesTests;
+package UnitTests.GeometriesTests;
 
 import Primitives.Coordinate;
 import Primitives.Point3d;

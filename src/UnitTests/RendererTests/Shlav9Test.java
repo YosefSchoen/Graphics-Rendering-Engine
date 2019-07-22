@@ -1,10 +1,8 @@
-package unittests.RendererTests;
+package UnitTests.RendererTests;
 
 import org.junit.Test;
 
 import java.awt.Color;
-
-import org.junit.Test;
 
 
 import Elements.SpotLight;
